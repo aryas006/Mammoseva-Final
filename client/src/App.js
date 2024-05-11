@@ -7,7 +7,7 @@ import Intro from "./pages/Intro";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Dashboard from "./pages/Dashboard";
-import Blogs from "./pages/BLogs";
+import Blogs from "./pages/Blogs";
 import DocsInfo from "./pages/DocsInfo";
 import GovSchemes from "./pages/GovSchemes";
 import NGO from "./pages/NGO";
@@ -23,12 +23,12 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Home"
+          name="Login"
           component={Login}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Home"
+          name="SignUp"
           component={SignUp}
           options={{ headerShown: false }}
         />
@@ -38,22 +38,22 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Home"
+          name="Blogs"
           component={Blogs}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Home"
+          name="Docs"
           component={DocsInfo}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Home"
+          name="NGO"
           component={NGO}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Home"
+          name="GovSchemes"
           component={GovSchemes}
           options={{ headerShown: false }}
         />
