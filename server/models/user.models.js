@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
@@ -26,6 +27,13 @@ const userSchema = new Schema({
 }, {
   timestamps: true // Adds createdAt and updatedAt fields automatically
 });
+
+userSchema.pre('save', async function(next){
+  if(this.isModified('password')){
+      this.password = await bcrypt.hash(this.password,12)
+      }
+  next()
+})
 
 // Create and export the User model
 const User = mongoose.model('User', userSchema);

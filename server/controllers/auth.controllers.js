@@ -14,4 +14,20 @@ const register = async (req, res) => {
     }
 }
 
-module.exports = { register }
+const login = async (req, res) => {
+    try {
+        const { email, password } = req.body
+        const userExists = await User.findOne({ email })
+        if (!userExists) {
+            return res.json({ message: "User does not exist" })
+        }
+        const user = await bcrypt.compare(password, userExists.password)
+        if (!user) {
+            return res.json({ message: "Invalid credentials" })
+        }
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+module.exports = { register, login }
