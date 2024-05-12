@@ -11,12 +11,13 @@ import Blogs from "./pages/Blogs";
 import DocsInfo from "./pages/DocsInfo";
 import GovSchemes from "./pages/GovSchemes";
 import NGO from "./pages/NGO";
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Intro">
+      <Stack.Navigator initialRouteName="Docs">
         <Stack.Screen
           name="Intro"
           component={Intro}
