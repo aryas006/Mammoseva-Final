@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, ScrollView, Image } from "react-native";
+import Nav from "../components/Nav";
 
 const DocsInfo = () => {
   // Dummy blog data
@@ -21,32 +22,35 @@ const DocsInfo = () => {
   ];
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollView}>
-      <Text style={styles.title}>Docs</Text>
-      {blogs.map((blog) => (
-        <View style={styles.blogItem} key={blog.id}>
-          <View style={styles.imageContainer}>
-            <Image source={blog.imagePath} style={styles.image} />
+    <>
+      <ScrollView contentContainerStyle={styles.scrollView}>
+        <Text style={styles.title}>Docs</Text>
+        {blogs.map((blog) => (
+          <View style={styles.blogItem} key={blog.id}>
+            <View style={styles.imageContainer}>
+              <Image source={blog.imagePath} style={styles.image} />
+            </View>
+            <View style={styles.textContainer}>
+              <Text style={styles.blogTitle}>{blog.title}</Text>
+              <Text style={styles.blogSubtitle}>{blog.subtitle}</Text>
+            </View>
+            <View
+              style={{
+                borderRadius: 1000,
+                marginLeft: 10,
+                paddingHorizontal: 10,
+                paddingVertical: 5,
+                backgroundColor: "white",
+                borderRadius: 100,
+              }}
+            >
+              <Text style={styles.blogTag}>{blog.tag}</Text>
+            </View>
           </View>
-          <View style={styles.textContainer}>
-            <Text style={styles.blogTitle}>{blog.title}</Text>
-            <Text style={styles.blogSubtitle}>{blog.subtitle}</Text>
-          </View>
-          <View
-            style={{
-              borderRadius: 1000,
-              marginLeft: 10,
-              paddingHorizontal: 10,
-              paddingVertical: 5,
-              backgroundColor: "white",
-              borderRadius: 100,
-            }}
-          >
-            <Text style={styles.blogTag}>{blog.tag}</Text>
-          </View>
-        </View>
-      ))}
-    </ScrollView>
+        ))}
+      </ScrollView>
+      <Nav />
+    </>
   );
 };
 

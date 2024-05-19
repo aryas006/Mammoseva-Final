@@ -1,12 +1,16 @@
 import { View, Text, Image, StyleSheet } from "react-native";
 import React, { useCallback } from "react";
-import logo from "../../assets/Logo.png";
+// import logo from "../../assets/Logo.png";
 import Cal from "../components/Calendar";
 import { useFonts } from "expo-font";
+import { LinearGradient } from "expo-linear-gradient";
+import Nav from "../components/Nav";
+import { useNavigation } from "@react-navigation/native";
 
 const Dashboard = () => {
+  const navigation = useNavigation();
   const [fontsLoaded, fontError] = useFonts({
-    Montserrat: require("../../assets/fonts/Montserrat/Montserrat.ttf"),
+    Montserrat: require("../../assets/fonts/Montserrat/Montserrat-Regular.ttf"),
   });
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded || fontError) {
@@ -18,67 +22,123 @@ const Dashboard = () => {
     return null;
   }
   return (
-    <View
-      style={{
-        backgroundColor: "#FDE1E5",
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        paddingTop: 80,
-        paddingHorizontal: 20,
-        alignItems: "center",
-        justifyContent: "center",
-      }}
+    <LinearGradient
+      colors={["#FF55AB", "#EFB4C8", "#FFFFFF"]}
+      style={{ height: "100%", width: "100%" }}
     >
-      <Cal />
       <View
         style={{
-          backgroundColor: "#FFCFDF",
-          padding: 5,
-          width: "90%",
-          height: "40%",
-          margin: 20,
-          borderRadius: 1000,
+          width: "100%",
+          height: "100%",
           display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          shadowColor: "#000",
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-          elevation: 5,
+          paddingTop: 80,
+          paddingHorizontal: 10,
         }}
       >
-        <Image
-          source={logo}
-          resizeMode="contain"
-          style={{ width: "50%", height: "50%", margin: 10 }}
-        />
         <Text
           style={{
             fontSize: 20,
             color: "white",
-            fontWeight: "bold",
-            textAlign: "center",
-            width: "60%",
+            fontFamily: "sans",
+            fontWeight: "light",
           }}
         >
-          Get ready for the checkup in 2 days
+          Hello Anushka, Good Morning
         </Text>
+        <Cal />
+
+        <View
+          style={{
+            width: "90%",
+          }}
+        >
+          {/* <Image
+            source={logo}
+            resizeMode="contain"
+            style={{ width: "50%", height: "50%", margin: 10 }}
+          /> */}
+          <Text
+            style={{
+              fontSize: 100,
+              color: "white",
+              fontFamily: "sans",
+              fontWeight: "100",
+            }}
+          >
+            2 days
+          </Text>
+          <Text
+            style={{
+              fontSize: 20,
+              color: "white",
+              fontFamily: "sans",
+              fontWeight: "light",
+            }}
+          >
+            Remaining for Checking
+          </Text>
+        </View>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            width: "100%",
+            gap: "10",
+            padding: 5,
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: 20,
+          }}
+        >
+          <View style={styles.content}>
+            <Text
+              style={{
+                fontSize: 30,
+                fontFamily: "sans",
+                fontWeight: "light",
+              }}
+              onPress={() => navigation.navigate("NGO")}
+            >
+              NGO
+            </Text>
+          </View>
+          <View style={styles.content}>
+            <Text
+              style={{
+                fontSize: 30,
+                fontFamily: "sans",
+                fontWeight: "light",
+              }}
+              onPress={() => navigation.navigate("Docs")}
+            >
+              More Info
+            </Text>
+          </View>
+        </View>
+        <View
+          style={{
+            width: "100%",
+            backgroundColor: "white",
+            height: 150,
+            marginTop: 5,
+            borderRadius: 10,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 30,
+              fontFamily: "sans",
+              fontWeight: "light",
+              padding: 20,
+            }}
+            onPress={() => navigation.navigate("GovSchemes")}
+          >
+            Gov Schemes
+          </Text>
+        </View>
       </View>
-      <View style={styles.content}>
-        <Text style={styles.text}>Content 2</Text>
-      </View>
-      <View style={styles.content}>
-        <Text style={styles.text}>Content 3</Text>
-      </View>
-      <View style={styles.content}>
-        <Text style={styles.text}>Content 4</Text>
-      </View>
-    </View>
+      <Nav />
+    </LinearGradient>
   );
 };
 
@@ -92,13 +152,11 @@ const styles = StyleSheet.create({
   },
   content: {
     backgroundColor: "white",
-    width: "90%",
-    height: 100,
+    width: "50%",
+    height: 150,
     padding: 20,
-    marginVertical: 10,
+
     borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
   },
   text: {
     fontSize: 18,
