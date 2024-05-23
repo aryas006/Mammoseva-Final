@@ -2,29 +2,34 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import introImage from "../../assets/meditation.png";
 import { useNavigation } from "@react-navigation/native";
-
+import { LinearGradient } from "expo-linear-gradient";
 const Intro = () => {
   const navigation = useNavigation();
   return (
-    <View style={styles.container}>
-      <Image source={introImage} style={styles.image} resizeMode="contain" />
-      <Text style={styles.text}>
-        Welcome to our menstrual cycle tracker! Let's empower your journey with
-        insights and support.
-      </Text>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("SignUp")}
-      >
-        <Text style={styles.buttonText}>Get Started</Text>
-      </TouchableOpacity>
-    </View>
+    <LinearGradient
+      colors={["#FF55AB", "#EFB4C8", "#FFFFFF"]}
+      style={{ height: "100%", width: "100%" }}
+    >
+      <View style={styles.container}>
+        <Image source={introImage} style={styles.image} resizeMode="contain" />
+        <Text style={styles.text}>Mammoseva</Text>
+        <Text style={{ textAlign: "center", margin: 10, fontWeight: "200" }}>
+          A user friendly personal breast wellness application. Promoting Early
+          Detection. Providing the Right Knowledge. Catering Emotional Needs.
+        </Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("SignUp")}
+        >
+          <Text style={styles.buttonText}>Get Started</Text>
+        </TouchableOpacity>
+      </View>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#FDE1E5",
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
@@ -37,13 +42,23 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: "center",
-    marginBottom: 20,
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#CE196A",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.4,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   button: {
+    width: "100%",
     backgroundColor: "#CE196A",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingVertical: 20,
+    marginTop: 10,
     borderRadius: 5,
+    display: "flex",
+    alignItems: "center",
   },
   buttonText: {
     color: "white",

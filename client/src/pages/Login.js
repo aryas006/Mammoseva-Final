@@ -98,11 +98,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   button: {
-    backgroundColor: "#ff3366",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    width: "100%",
+    backgroundColor: "#CE196A",
+    paddingVertical: 20,
+    marginTop: 10,
     borderRadius: 5,
-    marginTop: 20,
+    display: "flex",
+    alignItems: "center",
   },
   buttonText: {
     color: "white",

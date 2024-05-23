@@ -1,11 +1,18 @@
-import { View, Text, Image, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import React, { useCallback } from "react";
-// import logo from "../../assets/Logo.png";
-import Cal from "../components/Calendar";
+import Calendar from "../components/Calendar";
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
 import Nav from "../components/Nav";
 import { useNavigation } from "@react-navigation/native";
+import Carousel from "../components/Carousel";
 
 const Dashboard = () => {
   const navigation = useNavigation();
@@ -24,119 +31,48 @@ const Dashboard = () => {
   return (
     <LinearGradient
       colors={["#FF55AB", "#EFB4C8", "#FFFFFF"]}
-      style={{ height: "100%", width: "100%" }}
+      style={{ width: "100%", height: "100%" }}
     >
-      <View
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          paddingTop: 80,
-          paddingHorizontal: 10,
-        }}
-      >
-        <Text
-          style={{
-            fontSize: 20,
-            color: "white",
-            fontFamily: "sans",
-            fontWeight: "light",
-          }}
-        >
-          Hello Anushka, Good Morning
-        </Text>
-        <Cal />
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.mainContent}>
+          <Text style={styles.greetingText}>Hello Anushka, Good Morning</Text>
+          <Calendar />
+          <View style={styles.countdownContainer}>
+            <Text style={styles.countdownText}>2 days</Text>
+            <Text style={styles.countdownSubText}>Remaining for Checking</Text>
+          </View>
+        </View>
 
-        <View
-          style={{
-            width: "90%",
-          }}
-        >
-          {/* <Image
-            source={logo}
-            resizeMode="contain"
-            style={{ width: "50%", height: "50%", margin: 10 }}
-          /> */}
-          <Text
-            style={{
-              fontSize: 100,
-              color: "white",
-              fontFamily: "sans",
-              fontWeight: "100",
-            }}
-          >
-            2 days
-          </Text>
-          <Text
-            style={{
-              fontSize: 20,
-              color: "white",
-              fontFamily: "sans",
-              fontWeight: "light",
-            }}
-          >
-            Remaining for Checking
-          </Text>
-        </View>
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            width: "100%",
-            gap: "10",
-            padding: 5,
-            alignItems: "center",
-            justifyContent: "center",
-            marginTop: 20,
-          }}
-        >
-          <View style={styles.content}>
-            <Text
-              style={{
-                fontSize: 30,
-                fontFamily: "sans",
-                fontWeight: "light",
-              }}
+        <View style={{ width: "100%", padding: 10 }}>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
               onPress={() => navigation.navigate("NGO")}
+              style={styles.content}
             >
-              NGO
-            </Text>
-          </View>
-          <View style={styles.content}>
-            <Text
-              style={{
-                fontSize: 30,
-                fontFamily: "sans",
-                fontWeight: "light",
-              }}
+              <View>
+                <Text style={styles.buttonText}>NGO</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
               onPress={() => navigation.navigate("Docs")}
+              style={styles.content}
             >
-              More Info
-            </Text>
+              <View>
+                <Text style={styles.buttonText}>More Info</Text>
+              </View>
+            </TouchableOpacity>
           </View>
-        </View>
-        <View
-          style={{
-            width: "100%",
-            backgroundColor: "white",
-            height: 150,
-            marginTop: 5,
-            borderRadius: 10,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 30,
-              fontFamily: "sans",
-              fontWeight: "light",
-              padding: 20,
-            }}
+          <TouchableOpacity
+            style={styles.govSchemesButton}
             onPress={() => navigation.navigate("GovSchemes")}
           >
-            Gov Schemes
-          </Text>
+            <View>
+              <Text style={styles.buttonText}>Gov Schemes</Text>
+            </View>
+          </TouchableOpacity>
         </View>
-      </View>
+        <Carousel />
+      </ScrollView>
       <Nav />
     </LinearGradient>
   );
@@ -145,21 +81,73 @@ const Dashboard = () => {
 export default Dashboard;
 
 const styles = StyleSheet.create({
-  image: {
-    width: "80%",
-    height: "50%",
-    marginBottom: 20,
+  scrollContainer: {
+    flexGrow: 1,
   },
-  content: {
-    backgroundColor: "white",
-    width: "50%",
-    height: 150,
-    padding: 20,
+  mainContent: {
+    width: "100%",
+    paddingTop: 80,
+    paddingHorizontal: 10,
+  },
+  greetingText: {
+    fontSize: 20,
+    color: "white",
+    fontFamily: "sans",
+    fontWeight: "light",
+  },
+  countdownContainer: {
+    width: "90%",
+  },
+  countdownText: {
+    fontSize: 100,
+    color: "white",
+    fontFamily: "sans",
+    fontWeight: "100",
+  },
+  countdownSubText: {
+    fontSize: 20,
+    color: "white",
+    fontFamily: "sans",
+    fontWeight: "light",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "center",
+    paddingHorizontal: 10,
+  },
 
+  content: {
+    backgroundColor: "#FF55AB",
+    width: "50%",
+    height: 100,
+    padding: 20,
     borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.4,
+    shadowRadius: 3.84,
+    elevation: 5,
+    margin: 10,
   },
-  text: {
-    fontSize: 18,
-    fontWeight: "bold",
+  buttonText: {
+    fontSize: 20,
+    fontFamily: "sans",
+    fontWeight: "light",
+    color: "white",
+  },
+  govSchemesButton: {
+    width: "100%",
+    backgroundColor: "#FF55AB",
+    height: 100,
+    marginTop: 5,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.4,
+    shadowRadius: 3.84,
+    elevation: 5,
+    paddingHorizontal: 10,
+    padding: 20,
   },
 });

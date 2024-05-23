@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, Image, Button, Linking } from "react-native";
 import tw from "twrnc";
 import Nav from "../components/Nav";
 import { useNavigation } from "@react-navigation/native";
-
+import { LinearGradient } from "expo-linear-gradient";
 export default function App() {
   const handlePress = () => {
     const url = "";
@@ -11,22 +11,27 @@ export default function App() {
     );
   };
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Header</Text>
-      <Image
-        source={require("../../assets/images/svastava.jpg")}
-        style={styles.image}
-      />
-      <Text style={styles.description}>
-        Swastava Cancer Care is a non-profit organisation working towards the
-        cause of defeating cancer in India. Registered as a society in 2017,
-        Swastava's mission is to create awareness among people in general and
-        youth in particular about various types of cancers and their causes
-        along with a way to prevent them.
-      </Text>
-      <Button title="Visit" onPress={handlePress} style={tw`text-white`} />
-      <Nav />
-    </View>
+    <LinearGradient
+      colors={["#FF55AB", "#EFB4C8", "#FFFFFF"]}
+      style={{ height: "100%", width: "100%" }}
+    >
+      <View style={styles.container}>
+        <Text style={styles.header}>NGO</Text>
+        <Image
+          source={require("../../assets/images/svastava.jpg")}
+          style={styles.image}
+        />
+        <Text style={styles.description}>
+          Swastava Cancer Care is a non-profit organisation working towards the
+          cause of defeating cancer in India. Registered as a society in 2017,
+          Swastava's mission is to create awareness among people in general and
+          youth in particular about various types of cancers and their causes
+          along with a way to prevent them.
+        </Text>
+        <Button title="Visit" onPress={handlePress} style={tw`text-white`} />
+        <Nav />
+      </View>
+    </LinearGradient>
   );
 }
 
@@ -36,7 +41,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingTop: 50,
-    backgroundColor: "#f9c7de",
   },
   header: {
     fontSize: 24,
