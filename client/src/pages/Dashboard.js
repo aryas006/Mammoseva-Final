@@ -1,24 +1,37 @@
 import {
   View,
   Text,
-  Image,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Modal,
 } from "react-native";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import Calendar from "../components/Calendar";
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
 import Nav from "../components/Nav";
 import { useNavigation } from "@react-navigation/native";
 import Carousel from "../components/Carousel";
+import FormDialog from "../components/FormModal";
+// Add this import if you are using SplashScreen
+
+const FormDialogModal = ({ visible, onClose }) => {
+  return (
+    <Modal transparent={true} visible={visible} animationType="slide">
+      <FormDialog onClose={onClose} />
+    </Modal>
+  );
+};
 
 const Dashboard = () => {
+  const [num, setNum] = useState(0);
+  const [isModalVisible, setModalVisible] = useState(true);
   const navigation = useNavigation();
   const [fontsLoaded, fontError] = useFonts({
     Montserrat: require("../../assets/fonts/Montserrat/Montserrat-Regular.ttf"),
   });
+
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded || fontError) {
       await SplashScreen.hideAsync();
@@ -28,51 +41,62 @@ const Dashboard = () => {
   if (!fontsLoaded && !fontError) {
     return null;
   }
+
+  const handleCloseModal = () => {
+    setModalVisible(false);
+    setNum(0); // Example to change num after closing the modal
+  };
+
   return (
     <LinearGradient
       colors={["#FF55AB", "#EFB4C8", "#FFFFFF"]}
       style={{ width: "100%", height: "100%" }}
     >
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={styles.mainContent}>
-          <Text style={styles.greetingText}>Hello Anushka, Good Morning</Text>
-          <Calendar />
-          <View style={styles.countdownContainer}>
-            <Text style={styles.countdownText}>2 days</Text>
-            <Text style={styles.countdownSubText}>Remaining for Checking</Text>
-          </View>
-        </View>
-
-        <View style={{ width: "100%", padding: 10 }}>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("NGO")}
-              style={styles.content}
-            >
-              <View>
-                <Text style={styles.buttonText}>NGO</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Docs")}
-              style={styles.content}
-            >
-              <View>
-                <Text style={styles.buttonText}>More Info</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-          <TouchableOpacity
-            style={styles.govSchemesButton}
-            onPress={() => navigation.navigate("GovSchemes")}
-          >
-            <View>
-              <Text style={styles.buttonText}>Gov Schemes</Text>
+      {num === 0 && isModalVisible ? (
+        <FormDialogModal visible={isModalVisible} onClose={handleCloseModal} />
+      ) : (
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <View style={styles.mainContent}>
+            <Text style={styles.greetingText}>Hello Anushka, Good Morning</Text>
+            <Calendar />
+            <View style={styles.countdownContainer}>
+              <Text style={styles.countdownText}>{num} days</Text>
+              <Text style={styles.countdownSubText}>
+                Remaining for Checking
+              </Text>
             </View>
-          </TouchableOpacity>
-        </View>
-        <Carousel />
-      </ScrollView>
+          </View>
+          <View style={{ width: "100%", padding: 10 }}>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("NGO")}
+                style={styles.content}
+              >
+                <View>
+                  <Text style={styles.buttonText}>NGO</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Docs")}
+                style={styles.content}
+              >
+                <View>
+                  <Text style={styles.buttonText}>More Info</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity
+              style={styles.govSchemesButton}
+              onPress={() => navigation.navigate("GovSchemes")}
+            >
+              <View>
+                <Text style={styles.buttonText}>Gov Schemes</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <Carousel />
+        </ScrollView>
+      )}
       <Nav />
     </LinearGradient>
   );
@@ -116,7 +140,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: 10,
   },
-
   content: {
     backgroundColor: "#FF55AB",
     width: "50%",
