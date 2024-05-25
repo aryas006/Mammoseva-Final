@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, ScrollView, Image } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Image, Linking, TouchableOpacity } from "react-native";
 import Nav from "../components/Nav";
 
 const Blogs = () => {
@@ -11,6 +11,7 @@ const Blogs = () => {
       subtitle: "Rina: Stage 2",
       imagePath: require("../../assets/images/logob1.png"),
       tag: "Podcast",
+      link: "https://learnlooklocate.com/rina-stage-2-breast-cancer-survivor-india/"
     },
     {
       id: 2,
@@ -18,6 +19,7 @@ const Blogs = () => {
       subtitle: "Simran: HER2-Positive",
       imagePath: require("../../assets/images/logob1.png"),
       tag: "Link",
+      link: "https://www.siemens-healthineers.com/perspectives/breastcancer-patientstory-India"
     },
     {
       id: 3,
@@ -26,6 +28,7 @@ const Blogs = () => {
       subtitle: "Shreshta: Stage 3",
       imagePath: require("../../assets/images/logob3.png"),
       tag: "Podcast",
+      link: "https://www.siemens-healthineers.com/perspectives/breastcancer-patientstory-India"
     },
     {
       id: 4,
@@ -33,6 +36,7 @@ const Blogs = () => {
       subtitle: "Mayo Clinic",
       imagePath: require("../../assets/images/survivor1.jpg"),
       tag: "Link",
+      link: "https://youtu.be/q8j_vZRZKx0?si=Qp2_hRuuRTQrjQ0S"
     },
     {
       id: 5,
@@ -40,6 +44,7 @@ const Blogs = () => {
       subtitle: "Manipal Hospitals",
       imagePath: require("../../assets/images/survivor2.jpg"),
       tag: "Podcast",
+      link: "https://youtu.be/Pc1vPFhQGPE?feature=shared"
     },
     {
       id: 6,
@@ -47,35 +52,42 @@ const Blogs = () => {
       subtitle: "Sahyadri Hospitals",
       imagePath: require("../../assets/images/survivor3.jpg"),
       tag: "Link",
+      link: "https://youtu.be/DxNFq3JngPY?si=ztg0LP2xNniEv5y6"
     },
   ];
+
+  const handleLinkPress = (url) => {
+    Linking.openURL(url);
+  }
 
   return (
     <>
       <ScrollView contentContainerStyle={styles.scrollView}>
         <Text style={styles.title}>Blogs</Text>
         {blogs.map((blog) => (
-          <View style={styles.blogItem} key={blog.id}>
-            <View style={styles.imageContainer}>
-              <Image source={blog.imagePath} style={styles.image} />
+          <TouchableOpacity key={blog.id} onPress={() => handleLinkPress(blog.link)}>
+            <View style={styles.blogItem}>
+              <View style={styles.imageContainer}>
+                <Image source={blog.imagePath} style={styles.image} />
+              </View>
+              <View style={styles.textContainer}>
+                <Text style={styles.blogTitle}>{blog.title}</Text>
+                <Text style={styles.blogSubtitle}>{blog.subtitle}</Text>
+              </View>
+              <View
+                style={{
+                  borderRadius: 1000,
+                  marginLeft: 10,
+                  paddingHorizontal: 10,
+                  paddingVertical: 5,
+                  backgroundColor: "white",
+                  borderRadius: 100,
+                }}
+              >
+                <Text style={styles.blogTag}>{blog.tag}</Text>
+              </View>
             </View>
-            <View style={styles.textContainer}>
-              <Text style={styles.blogTitle}>{blog.title}</Text>
-              <Text style={styles.blogSubtitle}>{blog.subtitle}</Text>
-            </View>
-            <View
-              style={{
-                borderRadius: 1000,
-                marginLeft: 10,
-                paddingHorizontal: 10,
-                paddingVertical: 5,
-                backgroundColor: "white",
-                borderRadius: 100,
-              }}
-            >
-              <Text style={styles.blogTag}>{blog.tag}</Text>
-            </View>
-          </View>
+          </TouchableOpacity>
         ))}
       </ScrollView>
       <Nav />

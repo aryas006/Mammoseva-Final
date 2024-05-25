@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, FlatList, StyleSheet } from "react-native";
 
-const days = Array.from({ length: 31 }, (_, i) => i + 1); // Array of days from 1 to 31
+const days = Array.from({ length: 28 }, (_, i) => i + 1); // Array of days from 1 to 31
 
 const Calendar = () => {
   return (

@@ -1,15 +1,15 @@
+import React from "react";
 import { StyleSheet, Text, View, Image, Button, Linking } from "react-native";
-import tw from "twrnc";
-import Nav from "../components/Nav";
-import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
+
 export default function App() {
   const handlePress = () => {
-    const url = "";
+    const url = "https://swastavacancercare.org/donate-confidence/";
     Linking.openURL(url).catch((err) =>
       console.error("An error occurred", err)
     );
   };
+
   return (
     <LinearGradient
       colors={["#FF55AB", "#EFB4C8", "#FFFFFF"]}
@@ -28,8 +28,7 @@ export default function App() {
           youth in particular about various types of cancers and their causes
           along with a way to prevent them.
         </Text>
-        <Button title="Visit" onPress={handlePress} style={tw`text-white`} />
-        <Nav />
+        <Button title="Visit" onPress={handlePress} style={styles.button} />
       </View>
     </LinearGradient>
   );
@@ -43,7 +42,7 @@ const styles = StyleSheet.create({
     paddingTop: 50,
   },
   header: {
-    fontSize: 24,
+    fontSize: 30, // Increased font size
     fontWeight: "bold",
     marginBottom: 20,
   },
@@ -54,8 +53,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   description: {
-    fontSize: 16,
+    fontSize: 18, // Increased font size
     textAlign: "center",
     paddingHorizontal: 20,
+    marginBottom: 20, // Added margin bottom
+  },
+  button: {
+    fontSize: 20, // Increased font size
   },
 });
