@@ -1,13 +1,20 @@
 const User = require('../models/user.models')
+const bcrypt = require('bcrypt')    
 
 const register = async (req, res) => {
     try {
-        const { name, email, password, cpassword, periodDate } = req.body
+        const { name, email, password, periodDate } = req.body
+        if (!name || !email || !password || !periodDate) {
+            return res.json({ message: "Please fill in all fields" })
+        }
         const userExists = await User.findOne({ email })
         if (userExists) {
             return res.json({ message: "User already exists" })
         } else {
-            await User.create({ name, email, password, cpassword, periodDate })
+            const hashedPassword = await bcrypt.hash(password, 12)
+            const newUser = await User.create({ name, email, password: hashedPassword, periodDate })
+            console.log(newUser)
+            res.status(201).json({ 'success': `New user ${newUser.name} created successfully.` })
         }
     } catch (error) {
         console.error(error)

@@ -11,4 +11,6 @@ connectDB()
 app.use(express.json());
 app.use(cors());
 
+app.listen(PORT, () => console.log(`Server running at ${PORT}`))
+
 app.use('/register', router)
