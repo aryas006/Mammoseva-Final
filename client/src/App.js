@@ -12,7 +12,7 @@ import DocsInfo from "./pages/DocsInfo";
 import GovSchemes from "./pages/GovSchemes";
 import NGO from "./pages/NGO";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Profile from "./pages/ProfileEdit";
+import Profile from "./pages/Profile";
 import ProfileEdit from "./pages/ProfileEdit";
 
 const Stack = createNativeStackNavigator();
@@ -68,10 +68,11 @@ export default function App() {
               options={{ headerShown: false }}
             />
             <Stack.Screen
-              name="Profile Edit"
+              name="EditProfile"
               component={ProfileEdit}
               options={{ headerShown: false }}
             />
+
           </>
         ) : (
           <>

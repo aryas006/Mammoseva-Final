@@ -24,7 +24,10 @@ const Dashboard = () => {
       try {
         const token = await AsyncStorage.getItem("token");
         if (token) {
-          const response = await axios.post("http://192.168.0.106:9000/userdata", { token });
+          const response = await axios.post(
+            "http://192.168.0.106:9000/userdata",
+            { token }
+          );
           setUserData(response.data.data);
           console.log(response.data.data);
         }
@@ -44,7 +47,7 @@ const Dashboard = () => {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.mainContent}>
           <Text style={styles.greetingText}>
-          Hello {userData.name ? userData.name : "User"}, Good Morning
+            Hello {userData.name ? userData.name : "User"}, Good Morning
           </Text>
           <Calendar />
           <View style={styles.countdownContainer}>
@@ -94,11 +97,10 @@ const styles = StyleSheet.create({
     color: "white",
     fontFamily: "sans",
     fontWeight: "light",
-    textAlign: "center",
   },
   countdownContainer: {
-    width: "90%",
-    alignItems: "center",
+    width: "100%",
+    alignItems: "start",
     marginTop: 20,
   },
   countdownText: {
@@ -123,7 +125,7 @@ const styles = StyleSheet.create({
   },
   content: {
     backgroundColor: "#FF55AB",
-    width: "45%",
+    width: "50%",
     height: 100,
     justifyContent: "center",
     alignItems: "center",
