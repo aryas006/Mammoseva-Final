@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -8,20 +9,75 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Alert,
 } from "react-native";
-import React, { useState } from "react";
 import Logo from "../../assets/Logo.png";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+
 const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [menstruationTime, setMenstruationTime] = useState("");
+  const [periodDate, setPeriodDate] = useState(new Date());
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const navigation = useNavigation();
+
   const handleSignUp = () => {
-    // Implement your sign-up logic here
+    const validationError = validateFields(name, email, password, periodDate);
+    if (validationError) {
+      alert(validationError);
+      return;
+    }
+    const formattedDate = periodDate.toISOString().split("T")[0];
     console.log("Signing up...");
+    const userData = {
+      name,
+      email,
+      password,
+      periodDate: formattedDate,
+    };
+    axios
+      .post("http://192.168.0.106:9000/register", userData)
+      .then((res) => {
+        console.log(res.data);
+        if (res.status === 201) {
+            Alert.alert("Registered successfully", "", [
+                { text: "OK", onPress: () => navigation.navigate("Login") },
+            ]);
+        } else {
+            Alert.alert("Registration failed", res.data.message || "Unknown error");
+        }
+    })
+      .catch((err) => console.error(err));
+  };
+
+  const validateFields = (name, email, password, periodDate) => {
+    if (!name) return "Name is required";
+    if (!email) return "Email is required";
+    if (!password) return "Password is required";
+    if (!periodDate) return "Period date is required";
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) return "Invalid email format";
+
+    if (password.length < 6) return "Password must be at least 6 characters long";
+
+    return null;
+  };
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date) => {
+    setPeriodDate(date);
+    hideDatePicker();
   };
 
   return (
@@ -29,7 +85,10 @@ const SignUp = () => {
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <ScrollView contentContainerStyle={styles.scrollView}>
+      <ScrollView
+        contentContainerStyle={styles.scrollView}
+        keyboardShouldPersistTaps="always"
+      >
         <Image source={Logo} style={styles.logo} />
         <Text style={styles.title}>Sign Up</Text>
         <Text style={styles.label}>Name</Text>
@@ -55,21 +114,15 @@ const SignUp = () => {
           onChangeText={(text) => setPassword(text)}
           secureTextEntry
         />
-        <Text style={styles.label}>Confirm Password</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Confirm your password"
-          value={confirmPassword}
-          onChangeText={(text) => setConfirmPassword(text)}
-          secureTextEntry
-        />
         <Text style={styles.label}>Day of Menstruation in the Month</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter Day of menstruation"
-          value={menstruationTime}
-          onChangeText={(text) => setMenstruationTime(text)}
-          keyboardType="numeric"
+        <TouchableOpacity style={styles.dateInput} onPress={showDatePicker}>
+          <Text>{periodDate.toISOString().split("T")[0]}</Text>
+        </TouchableOpacity>
+        <DateTimePickerModal
+          isVisible={isDatePickerVisible}
+          mode="date"
+          onConfirm={handleConfirm}
+          onCancel={hideDatePicker}
         />
         <TouchableOpacity style={styles.button} onPress={handleSignUp}>
           <Text style={styles.buttonText}>Sign Up</Text>
@@ -78,7 +131,7 @@ const SignUp = () => {
           style={{ marginTop: 5 }}
           onPress={() => navigation.navigate("Login")}
         >
-          <Text>Already have an Account? Log-in Here</Text>
+          <Text>Already have an Account? Login Here</Text>
         </TouchableOpacity>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -119,6 +172,16 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 10,
     marginBottom: 10,
+  },
+  dateInput: {
+    width: "100%",
+    height: 40,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 10,
+    justifyContent: "center",
   },
   button: {
     width: "100%",

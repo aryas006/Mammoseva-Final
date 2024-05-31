@@ -23,17 +23,22 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
     try {
-        const { email, password } = req.body
-        const userExists = await User.findOne({ email })
+        const { email, password } = req.body;
+        if (!email || !password) {
+            return res.status(400).json({ message: "Please fill in all fields" });
+        }
+        const userExists = await User.findOne({ email });
         if (!userExists) {
-            return res.json({ message: "User does not exist" })
+            return res.status(400).json({ message: "User does not exist" });
         }
-        const user = await bcrypt.compare(password, userExists.password)
-        if (!user) {
-            return res.json({ message: "Invalid credentials" })
+        const isPasswordValid = await bcrypt.compare(password, userExists.password);
+        if (!isPasswordValid) {
+            return res.status(400).json({ message: "Invalid credentials" });
         }
+        return res.status(200).json({ message: "Login successful" });
     } catch (error) {
-        console.error(error)
+        console.error('Error during login:', error);
+        return res.status(500).json({ message: "Server error" });
     }
 }
 
