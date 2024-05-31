@@ -13,8 +13,8 @@ import {
 import React, { useState } from "react";
 import Logo from "../../assets/Logo.png";
 import { useNavigation } from "@react-navigation/native";
-import axios from "axios"
-import AsyncStorage from "@react-native-async-storage/async-storage"
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -23,24 +23,29 @@ const Login = () => {
 
   const handleLogin = () => {
     console.log("Logging in...");
-    const userData = {
-      email: email,
-      password
-    }
+    const userData = { email, password };
+
     axios.post("http://192.168.0.106:9000/login", userData)
-          .then((res) => {
-            console.log(res.data);
-            if (res.status === 200) {
-              AsyncStorage.setItem("token", res.data.data)      
-              AsyncStorage.setItem("isLoggedIn", JSON.stringify(true))        
-              Alert.alert("Logged in Successfully", "", [
-                  { text: "OK", onPress: () => navigation.navigate("Home") },
-              ]);
-            } else {
-                Alert.alert("Login failed", res.data.message || "Unknown error");
-            }
-          })
-         .catch(res => console.error(res))
+      .then(async (res) => {
+        console.log(res.data);
+
+        if (res.status === 200) {
+          await AsyncStorage.setItem("token", res.data.data);
+          await AsyncStorage.setItem("isLoggedIn", "true");
+          Alert.alert("Logged in Successfully", "", [
+            { text: "OK", onPress: () => navigation.reset({
+              index: 0,
+              routes: [{ name: "Home" }],
+            }) },
+          ]);
+        } else {
+          Alert.alert("Login failed", res.data.message || "Unknown error");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        Alert.alert("Login failed", "An error occurred. Please try again.");
+      });
   };
 
   return (
@@ -70,10 +75,7 @@ const Login = () => {
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Log In</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={{ marginTop: 5 }}
-          onPress={() => navigation.navigate("SignUp")}
-        >
+        <TouchableOpacity style={{ marginTop: 5 }} onPress={() => navigation.navigate("SignUp")}>
           <Text>Don't have an account? Sign Up Here</Text>
         </TouchableOpacity>
       </ScrollView>

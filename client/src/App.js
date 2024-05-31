@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
 import Intro from "./pages/Intro";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
@@ -18,14 +16,11 @@ import ProfileEdit from "./pages/ProfileEdit";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   async function getData() {
     const data = await AsyncStorage.getItem("isLoggedIn");
-    console.log(data);
-    const isLoggedIn = data === "true"; // Parse string to boolean
-    setIsLoggedIn(isLoggedIn);
+    setIsLoggedIn(data === "true");
   }
 
   useEffect(() => {
@@ -68,11 +63,10 @@ export default function App() {
               options={{ headerShown: false }}
             />
             <Stack.Screen
-              name="EditProfile"
+              name="ProfileEdit"
               component={ProfileEdit}
               options={{ headerShown: false }}
             />
-
           </>
         ) : (
           <>
@@ -97,4 +91,3 @@ export default function App() {
     </NavigationContainer>
   );
 }
-

@@ -18,6 +18,7 @@ const Dashboard = () => {
   const [num, setNum] = useState(0);
   const navigation = useNavigation();
   const [userData, setUserData] = useState({});
+  const [greeting, setGreeting] = useState("Good Morning")
 
   useEffect(() => {
     const getData = async () => {
@@ -37,6 +38,19 @@ const Dashboard = () => {
     };
 
     getData();
+
+    const updateGreeting = () => {
+      const currentHour = new Date().getHours();
+      if (currentHour < 12) {
+        setGreeting("Good Morning");
+      } else if (currentHour < 18) {
+        setGreeting("Good Afternoon");
+      } else {
+        setGreeting("Good Evening");
+      }
+    };
+
+    updateGreeting();
   }, []);
 
   return (
@@ -47,7 +61,7 @@ const Dashboard = () => {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.mainContent}>
           <Text style={styles.greetingText}>
-            Hello {userData.name ? userData.name : "User"}, Good Morning
+            Hello {userData.name ? userData.name : "User"}, {greeting}
           </Text>
           <Calendar />
           <View style={styles.countdownContainer}>

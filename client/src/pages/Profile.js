@@ -2,18 +2,27 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Profile = () => {
   const navigation = useNavigation();
-  const [email, setEmail] = useState("user@example.com"); // Example email
-  const [username, setUsername] = useState("username123"); // Example username
-  const [dayOfCycle, setDayOfCycle] = useState("5"); // Example day of cycle
-  const [password, setPassword] = useState(""); // Example password
+  const [email, setEmail] = useState("user@example.com");
+  const [username, setUsername] = useState("username123");
+  const [dayOfCycle, setDayOfCycle] = useState("5");
+  const [password, setPassword] = useState("");
 
   const handleEdit = () => {
-    // Handle save logic here
     console.log("Profile updated:", { email, username, dayOfCycle, password });
     navigation.navigate("ProfileEdit");
+  };
+
+  const handleLogout = async () => {
+    await AsyncStorage.setItem("isLoggedIn", "false");
+    await AsyncStorage.setItem("token", "");
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "Login" }],
+    });
   };
 
   return (
@@ -52,11 +61,9 @@ const Profile = () => {
           }}
         >
           <TouchableOpacity style={styles.button} onPress={handleEdit}>
-            <Text style={styles.buttonText} onPress={navigation.navigate}>
-              Edit Profile
-            </Text>
+            <Text style={styles.buttonText}>Edit Profile</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={handleEdit}>
+          <TouchableOpacity style={styles.button} onPress={handleLogout}>
             <Text style={styles.buttonText}>Logout</Text>
           </TouchableOpacity>
         </View>
