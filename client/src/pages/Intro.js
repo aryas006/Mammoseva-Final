@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 const Intro = () => {
   const navigation = useNavigation();
+  
   return (
     <LinearGradient
       colors={["#FF55AB", "#EFB4C8", "#FFFFFF"]}
@@ -13,13 +14,13 @@ const Intro = () => {
       <View style={styles.container}>
         <Image source={introImage} style={styles.image} resizeMode="contain" />
         <Text style={styles.text}>Mammoseva</Text>
-        <Text style={{ textAlign: "center", margin: 10, fontWeight: "200" }}>
+        <Text style={{ textAlign: "center", margin: 10, fontWeight: "600" }}>
           A user friendly personal breast wellness application. Promoting Early
           Detection. Providing the Right Knowledge. Catering Emotional Needs.
         </Text>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("SignUp")}
+          onPress={() => navigation.navigate("LangSelection")}
         >
           <Text style={styles.buttonText}>Get Started</Text>
         </TouchableOpacity>

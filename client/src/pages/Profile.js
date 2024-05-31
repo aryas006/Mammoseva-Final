@@ -47,10 +47,10 @@ const Profile = () => {
           <Text style={styles.info}>{dayOfCycle}</Text>
         </View>
 
-        <View style={styles.infoContainer}>
+        {/* <View style={styles.infoContainer}>
           <Text style={styles.label}>Password:</Text>
           <Text style={styles.info}>{password}</Text>
-        </View>
+        </View> */}
 
         <View
           style={{

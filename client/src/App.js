@@ -12,6 +12,7 @@ import NGO from "./pages/NGO";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Profile from "./pages/Profile";
 import ProfileEdit from "./pages/ProfileEdit";
+import LangSelection from './pages/LangSelection'
 
 const Stack = createNativeStackNavigator();
 
@@ -83,6 +84,11 @@ export default function App() {
             <Stack.Screen
               name="SignUp"
               component={SignUp}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="LangSelection"
+              component={LangSelection}
               options={{ headerShown: false }}
             />
           </>
