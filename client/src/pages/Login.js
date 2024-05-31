@@ -31,7 +31,8 @@ const Login = () => {
           .then((res) => {
             console.log(res.data);
             if (res.status === 200) {
-              AsyncStorage.setItem("token", res.data.data)              
+              AsyncStorage.setItem("token", res.data.data)      
+              AsyncStorage.setItem("isLoggedIn", JSON.stringify(true))        
               Alert.alert("Logged in Successfully", "", [
                   { text: "OK", onPress: () => navigation.navigate("Home") },
               ]);
