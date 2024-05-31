@@ -9,18 +9,18 @@ import {
   import { useNavigation } from "@react-navigation/native";
   import { LinearGradient } from "expo-linear-gradient";
   
-  const Profile = () => {
+  const ProfileEdit = () => {
     const navigation = useNavigation();
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [dayOfCycle, setDayOfCycle] = useState("");
     const [password, setPassword] = useState("");
   
-    // const handleSave = () => {
-    //   // Handle save logic here
-    //   console.log("Profile updated:", { email, username, dayOfCycle, password });
-    //   // Navigate back or to another screen if needed
-    // };
+    const handleSave = () => {
+      // Handle save logic here
+      console.log("Profile updated:", { email, username, dayOfCycle, password });
+      // Navigate back or to another screen if needed
+    };
   
     return (
       <LinearGradient
@@ -28,7 +28,7 @@ import {
         style={{ height: "100%", width: "100%" }}
       >
         <View style={styles.container}>
-          <Text style={styles.header}>Profile</Text>
+          <Text style={styles.header}>Edit Profile</Text>
   
           <TextInput
             style={styles.input}
@@ -65,10 +65,7 @@ import {
           />
   
           <TouchableOpacity style={styles.button} onPress={handleSave}>
-            <Text style={styles.buttonText} onPress={navigation.navigate}>Edit Profile</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={handleSave}>
-            <Text style={styles.buttonText}>Logout</Text>
+            <Text style={styles.buttonText}>Save</Text>
           </TouchableOpacity>
         </View>
       </LinearGradient>
@@ -113,4 +110,4 @@ import {
     },
   });
   
-  export default Profile;
+  export default ProfileEdit;
