@@ -14,6 +14,7 @@ import React, { useState } from "react";
 import Logo from "../../assets/Logo.png";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -30,9 +31,10 @@ const Login = () => {
           .then((res) => {
             console.log(res.data);
             if (res.status === 200) {
-                Alert.alert("Logged in Successfully", "", [
-                    { text: "OK", onPress: () => navigation.navigate("Home") },
-                ]);
+              AsyncStorage.setItem("token", res.data.data)              
+              Alert.alert("Logged in Successfully", "", [
+                  { text: "OK", onPress: () => navigation.navigate("Home") },
+              ]);
             } else {
                 Alert.alert("Login failed", res.data.message || "Unknown error");
             }

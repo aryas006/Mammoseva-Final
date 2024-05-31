@@ -1,115 +1,91 @@
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  Modal,
 } from "react-native";
-import React, { useCallback, useState } from "react";
 import Calendar from "../components/Calendar";
-import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
 import Nav from "../components/Nav";
 import { useNavigation } from "@react-navigation/native";
 import Carousel from "../components/Carousel";
-import FormDialog from "../components/FormModal";
-// Add this import if you are using SplashScreen
-
-const FormDialogModal = ({ visible, onClose }) => {
-  return (
-    <Modal transparent={true} visible={visible} animationType="slide">
-      <FormDialog onClose={onClose} />
-    </Modal>
-  );
-};
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Dashboard = () => {
   const [num, setNum] = useState(0);
-  const [isModalVisible, setModalVisible] = useState(true);
   const navigation = useNavigation();
-  const [fontsLoaded, fontError] = useFonts({
-    Montserrat: require("../../assets/fonts/Montserrat/Montserrat-Regular.ttf"),
-  });
+  const [userData, setUserData] = useState({});
 
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded || fontError) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded, fontError]);
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const token = await AsyncStorage.getItem("token");
+        if (token) {
+          const response = await axios.post("http://192.168.0.106:9000/userdata", { token });
+          setUserData(response.data.data);
+          console.log(response.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
 
-  if (!fontsLoaded && !fontError) {
-    return null;
-  }
-
-  const handleCloseModal = () => {
-    setModalVisible(false);
-    setNum(0); // Example to change num after closing the modal
-  };
+    getData();
+  }, []);
 
   return (
     <LinearGradient
       colors={["#FF55AB", "#EFB4C8", "#FFFFFF"]}
-      style={{ width: "100%", height: "100%" }}
+      style={{ flex: 1 }}
     >
-      {num === 0 && isModalVisible ? (
-        <FormDialogModal visible={isModalVisible} onClose={handleCloseModal} />
-      ) : (
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
-          <View style={styles.mainContent}>
-            <Text style={styles.greetingText}>Hello Anushka, Good Morning</Text>
-            <Calendar />
-            <View style={styles.countdownContainer}>
-              <Text style={styles.countdownText}>{num} days</Text>
-              <Text style={styles.countdownSubText}>
-                Remaining for Checking
-              </Text>
-            </View>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.mainContent}>
+          <Text style={styles.greetingText}>
+          Hello {userData.name ? userData.name : "User"}, Good Morning
+          </Text>
+          <Calendar />
+          <View style={styles.countdownContainer}>
+            <Text style={styles.countdownText}>{num} days</Text>
+            <Text style={styles.countdownSubText}>Remaining for Checking</Text>
           </View>
-          <View style={{ width: "100%", padding: 10 }}>
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("NGO")}
-                style={styles.content}
-              >
-                <View>
-                  <Text style={styles.buttonText}>NGO</Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("Docs")}
-                style={styles.content}
-              >
-                <View>
-                  <Text style={styles.buttonText}>More Info</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
+        </View>
+        <View style={{ width: "100%", padding: 10 }}>
+          <View style={styles.buttonContainer}>
             <TouchableOpacity
-              style={styles.govSchemesButton}
-              onPress={() => navigation.navigate("GovSchemes")}
+              onPress={() => navigation.navigate("NGO")}
+              style={styles.content}
             >
-              <View>
-                <Text style={styles.buttonText}>Gov Schemes</Text>
-              </View>
+              <Text style={styles.buttonText}>NGO</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Docs")}
+              style={styles.content}
+            >
+              <Text style={styles.buttonText}>More Info</Text>
             </TouchableOpacity>
           </View>
-          <Carousel />
-        </ScrollView>
-      )}
+          <TouchableOpacity
+            style={styles.govSchemesButton}
+            onPress={() => navigation.navigate("GovSchemes")}
+          >
+            <Text style={styles.buttonText}>Gov Schemes</Text>
+          </TouchableOpacity>
+        </View>
+        <Carousel />
+      </ScrollView>
       <Nav />
     </LinearGradient>
   );
 };
-
-export default Dashboard;
 
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
   },
   mainContent: {
-    width: "100%",
     paddingTop: 80,
     paddingHorizontal: 10,
   },
@@ -118,40 +94,46 @@ const styles = StyleSheet.create({
     color: "white",
     fontFamily: "sans",
     fontWeight: "light",
+    textAlign: "center",
   },
   countdownContainer: {
     width: "90%",
+    alignItems: "center",
+    marginTop: 20,
   },
   countdownText: {
     fontSize: 100,
     color: "white",
     fontFamily: "sans",
     fontWeight: "100",
+    textAlign: "center",
   },
   countdownSubText: {
     fontSize: 20,
     color: "white",
     fontFamily: "sans",
     fontWeight: "light",
+    textAlign: "center",
   },
   buttonContainer: {
     flexDirection: "row",
-    width: "100%",
     justifyContent: "center",
     paddingHorizontal: 10,
+    marginTop: 20,
   },
   content: {
     backgroundColor: "#FF55AB",
-    width: "50%",
+    width: "45%",
     height: 100,
-    padding: 20,
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.4,
     shadowRadius: 3.84,
     elevation: 5,
-    margin: 10,
+    marginHorizontal: 5,
   },
   buttonText: {
     fontSize: 20,
@@ -160,17 +142,19 @@ const styles = StyleSheet.create({
     color: "white",
   },
   govSchemesButton: {
-    width: "100%",
     backgroundColor: "#FF55AB",
+    width: "100%",
     height: 100,
-    marginTop: 5,
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.4,
     shadowRadius: 3.84,
     elevation: 5,
-    paddingHorizontal: 10,
-    padding: 20,
+    marginTop: 10,
   },
 });
+
+export default Dashboard;

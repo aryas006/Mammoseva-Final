@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.23.1",
     "jsonwebtoken": "^9.0.2"
   }
 }

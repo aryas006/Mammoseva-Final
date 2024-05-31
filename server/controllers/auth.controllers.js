@@ -37,7 +37,7 @@ const login = async (req, res) => {
             return res.status(400).json({ message: "Invalid credentials" });
         }
 
-        const token = jwt.sign({ id: userExists._id }, process.env.JWT_SECRET )
+        const token = jwt.sign({ email: userExists.email }, process.env.JWT_SECRET )
         return res.status(200).json({ message: "Login successful", data: token });
     } catch (error) {
         console.error('Error during login:', error);
@@ -45,4 +45,19 @@ const login = async (req, res) => {
     }
 }
 
-module.exports = { register, login }
+const userdata = async (req, res) => {
+    const { token } = req.body
+    try {
+        const user = jwt.verify(token, process.env.JWT_SECRET)
+        const userEmail = user.email
+
+        User.findOne({ email: userEmail })
+            .then((data) => {
+                return res.send({ data: data })
+            })
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+module.exports = { register, login, userdata }
