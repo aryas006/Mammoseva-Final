@@ -8,10 +8,12 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import Logo from "../../assets/Logo.png";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios"
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -19,9 +21,23 @@ const Login = () => {
   const navigation = useNavigation();
 
   const handleLogin = () => {
-    // Implement your login logic here
     console.log("Logging in...");
-    navigation.navigate("Home");
+    const userData = {
+      email: email,
+      password
+    }
+    axios.post("http://192.168.0.106:9000/login", userData)
+          .then((res) => {
+            console.log(res.data);
+            if (res.status === 200) {
+                Alert.alert("Logged in Successfully", "", [
+                    { text: "OK", onPress: () => navigation.navigate("Home") },
+                ]);
+            } else {
+                Alert.alert("Login failed", res.data.message || "Unknown error");
+            }
+          })
+         .catch(res => console.error(res))
   };
 
   return (
@@ -29,7 +45,7 @@ const Login = () => {
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <ScrollView contentContainerStyle={styles.scrollView}>
+      <ScrollView contentContainerStyle={styles.scrollView} keyboardShouldPersistTaps="always">
         <Image source={Logo} style={styles.logo} />
         <Text style={styles.title}>Log In</Text>
         <Text style={styles.label}>Email</Text>
