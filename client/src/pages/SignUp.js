@@ -15,6 +15,7 @@ import Logo from "../../assets/Logo.png";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { translations } from "../utils";
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -23,6 +24,25 @@ const SignUp = () => {
   const [periodDate, setPeriodDate] = useState(new Date());
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const navigation = useNavigation();
+
+  useEffect(() => {
+    const getLanguagePreference = async () => {
+      try {
+        const savedLanguage = await AsyncStorage.getItem('selectedLanguage');
+        if (savedLanguage) {
+          setLanguage(savedLanguage);
+          setTranslation(translations.reduce((acc, item, index) => {
+            acc[index] = item[savedLanguage];
+            return acc;
+          }, {}));
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getLanguagePreference();
+  }, []);
 
   const handleSignUp = () => {
     const validationError = validateFields(name, email, password, periodDate);
@@ -90,31 +110,31 @@ const SignUp = () => {
         keyboardShouldPersistTaps="always"
       >
         <Image source={Logo} style={styles.logo} />
-        <Text style={styles.title}>Sign Up</Text>
-        <Text style={styles.label}>Name</Text>
+        <Text style={styles.title}>{translations[1]}</Text>
+        <Text style={styles.label}>{translations[45]}</Text>
         <TextInput
           style={styles.input}
-          placeholder="Enter your name"
+          placeholder={traslations[4]}
           value={name}
           onChangeText={(text) => setName(text)}
         />
-        <Text style={styles.label}>Email</Text>
+        <Text style={styles.label}>{translations[2]}</Text>
         <TextInput
           style={styles.input}
-          placeholder="Enter your email"
+          placeholder={translations[5]}
           value={email}
           onChangeText={(text) => setEmail(text)}
           keyboardType="email-address"
         />
-        <Text style={styles.label}>Password</Text>
+        <Text style={styles.label}>{translations[3]}</Text>
         <TextInput
           style={styles.input}
-          placeholder="Enter your password"
+          placeholder={translations[6]}
           value={password}
           onChangeText={(text) => setPassword(text)}
           secureTextEntry
         />
-        <Text style={styles.label}>Day of Menstruation in the Month</Text>
+        <Text style={styles.label}>{translations[7]}</Text>
         <TouchableOpacity style={styles.dateInput} onPress={showDatePicker}>
           <Text>{periodDate.toISOString().split("T")[0]}</Text>
         </TouchableOpacity>
@@ -125,13 +145,13 @@ const SignUp = () => {
           onCancel={hideDatePicker}
         />
         <TouchableOpacity style={styles.button} onPress={handleSignUp}>
-          <Text style={styles.buttonText}>Sign Up</Text>
+          <Text style={styles.buttonText}>{translations[1]}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{ marginTop: 5 }}
           onPress={() => navigation.navigate("Login")}
         >
-          <Text>Already have an Account? Login Here</Text>
+          <Text>{translations[8]}</Text>
         </TouchableOpacity>
       </ScrollView>
     </KeyboardAvoidingView>

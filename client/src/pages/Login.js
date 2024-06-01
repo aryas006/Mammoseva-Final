@@ -77,28 +77,28 @@ const Login = () => {
     >
       <ScrollView contentContainerStyle={styles.scrollView} keyboardShouldPersistTaps="always">
         <Image source={Logo} style={styles.logo} />
-        <Text style={styles.title}>{translation[1]}</Text>
-        <Text style={styles.label}>Email</Text>
+        <Text style={styles.title}>{translation[0]}</Text>
+        <Text style={styles.label}>{translation[2]}</Text>
         <TextInput
           style={styles.input}
-          placeholder="Enter your email"
+          placeholder={translation[5]}
           value={email}
           onChangeText={(text) => setEmail(text)}
           keyboardType="email-address"
         />
-        <Text style={styles.label}>Password</Text>
+        <Text style={styles.label}>{translation[3]}</Text>
         <TextInput
           style={styles.input}
-          placeholder="Enter your password"
+          placeholder={translation[6]}
           value={password}
           onChangeText={(text) => setPassword(text)}
           secureTextEntry
         />
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
-          <Text style={styles.buttonText}>Log In</Text>
+          <Text style={styles.buttonText}>{translation[0]}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={{ marginTop: 5 }} onPress={() => navigation.navigate("SignUp")}>
-          <Text>Don't have an account? Sign Up Here</Text>
+          <Text>{translation[9]}</Text>
         </TouchableOpacity>
       </ScrollView>
     </KeyboardAvoidingView>

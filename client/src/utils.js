@@ -1,111 +1,117 @@
 export const translations = [
+    // 0
+    {
+        English: "Login",
+        Hindi: "लॉग इन करें",
+        Marathi: "लॉग इन करा",
+    },
     // 1
-    {
-        English: "Enter your name",
-        Hindi: "अपना नाम दर्ज करें",
-        Marathi: "तुमचं नाव प्रविष्ट करा",
-    },
-    // 2
-    {
-        English: "Enter your email",
-        Hindi: "अपना ईमेल दर्ज करें",
-        Marathi: "तुमचा ईमेल प्रविष्ट करा",
-    },
-    // 3
-    {
-        English: "Enter your password",
-        Hindi: "अपना पासवर्ड दर्ज करें",
-        Marathi: "तुमचा संकेतशब्द प्रविष्ट करा",
-    },
-    // 4
-    {
-        English: "Day of menstruation in the month",
-        Hindi: "महीने में मासिक धर्म का दिन",
-        Marathi: "महिन्यात मासिकाचा दिवस",
-    },
-    // 5
     {
         English: "Sign Up",
         Hindi: "साइन अप करें",
         Marathi: "साइन अप करा",
     },
+    // 2
+    {
+        English: "Email",
+        Hindi: "ईमेल",
+        Marathi: "ईमेल",
+    },
+    // 3
+    {
+        English: "Password",
+        Hindi: "पासवर्ड",
+        Marathi: "संकेतशब्द",
+    },
+    // 4
+    {
+        English: "Enter your name",
+        Hindi: "अपना नाम दर्ज करें",
+        Marathi: "तुमचं नाव प्रविष्ट करा",
+    },
+    // 5
+    {
+        English: "Enter your email",
+        Hindi: "अपना ईमेल दर्ज करें",
+        Marathi: "तुमचा ईमेल प्रविष्ट करा",
+    },
     // 6
+    {
+        English: "Enter your password",
+        Hindi: "अपना पासवर्ड दर्ज करें",
+        Marathi: "तुमचा संकेतशब्द प्रविष्ट करा",
+    },
+    // 7
+    {
+        English: "Day of menstruation in the month",
+        Hindi: "महीने में मासिक धर्म का दिन",
+        Marathi: "महिन्यात मासिकाचा दिवस",
+    },
+    // 8
     {
         English: "Already have an Account? Login Here",
         Hindi: "पहले से खाता है? यहाँ लॉगिन करें",
         Marathi: "आधीच खाते आहे? इथे लॉगिन करा",
     },
-    // 7
-    {
-        English: "Log In",
-        Hindi: "लॉग इन करें",
-        Marathi: "लॉग इन करा",
-    },
-    // 8
+    // 9
     {
         English: "Don't have an account? Sign Up Here",
         Hindi: "खाता नहीं है? यहाँ साइन अप करें",
         Marathi: "खाते नाही? इथे साइन अप करा",
     },
-    // 9
+    // 10
     {
         English: "Hello",
         Hindi: "नमस्ते",
         Marathi: "नमस्कार",
     },
-    // 10
+    // 11
     {
         English: "Good Morning",
         Hindi: "सुप्रभात",
         Marathi: "सुप्रभात",
     },
-    // 11
+    // 12
     {
         English: "Good Afternoon",
         Hindi: "शुभ अपराह्न",
         Marathi: "शुभ दुपार",
     },
-    // 12
+    // 13
     {
         English: "Good Evening",
         Hindi: "शुभ संध्या",
         Marathi: "शुभ संध्याकाळ",
     },
-    // 13
+    // 14
     {
         English: "days",
         Hindi: "दिन",
         Marathi: "दिवस",
     },
-    // 14
+    // 15
     {
         English: "Remaining for Checking",
         Hindi: "जांच के लिए शेष",
         Marathi: "तपासण्यासाठी शिल्लक",
     },
-    // 15
+    // 16
     {
         English: "NGO",
         Hindi: "एनजीओ",
         Marathi: "एनजीओ",
     },
-    // 16
+    // 17
     {
         English: "More Info",
         Hindi: "अधिक जानकारी",
         Marathi: "अधिक माहिती",
     },
-    // 17
+    // 18
     {
         English: "Gov Schemes",
         Hindi: "सरकारी योजनाएं",
         Marathi: "सरकारच्या योजना",
-    },
-    // 18
-    {
-        English: "Email",
-        Hindi: "ईमेल",
-        Marathi: "ईमेल",
     },
     // 19
     {
@@ -262,5 +268,10 @@ export const translations = [
         English: "Sahyadri Hospitals",
         Hindi: "सह्याद्री हॉस्पिटल्स",
         Marathi: "सह्याद्री हॉस्पिटल्स",
+    },
+    {
+        English: "Name",
+        Hindi: "नाम",
+        Marathi: "नाव",
     }
-]
+];

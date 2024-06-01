@@ -13,6 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 import Carousel from "../components/Carousel";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { translations } from "../utils";
 
 const Dashboard = () => {
   const [num, setNum] = useState(0);
@@ -51,6 +52,23 @@ const Dashboard = () => {
     };
 
     updateGreeting();
+
+    const getLanguagePreference = async () => {
+      try {
+        const savedLanguage = await AsyncStorage.getItem('selectedLanguage');
+        if (savedLanguage) {
+          setLanguage(savedLanguage);
+          setTranslation(translations.reduce((acc, item, index) => {
+            acc[index] = item[savedLanguage];
+            return acc;
+          }, {}));
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getLanguagePreference();
   }, []);
 
   return (
@@ -61,7 +79,7 @@ const Dashboard = () => {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.mainContent}>
           <Text style={styles.greetingText}>
-            Hello {userData.name ? userData.name : "User"}, {greeting}
+            {translations[10]} {userData.name ? userData.name : "User"}, {greeting}
           </Text>
           <Calendar />
           <View style={styles.countdownContainer}>
