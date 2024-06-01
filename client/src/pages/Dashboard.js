@@ -83,8 +83,8 @@ const Dashboard = () => {
           </Text>
           <Calendar />
           <View style={styles.countdownContainer}>
-            <Text style={styles.countdownText}>{num} days</Text>
-            <Text style={styles.countdownSubText}>Remaining for Checking</Text>
+            <Text style={styles.countdownText}>{num} {translations[14]}</Text>
+            <Text style={styles.countdownSubText}>{translations[15]}</Text>
           </View>
         </View>
         <View style={{ width: "100%", padding: 10 }}>
@@ -93,20 +93,20 @@ const Dashboard = () => {
               onPress={() => navigation.navigate("NGO")}
               style={styles.content}
             >
-              <Text style={styles.buttonText}>NGO</Text>
+              <Text style={styles.buttonText}>{translations[16]}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => navigation.navigate("Docs")}
               style={styles.content}
             >
-              <Text style={styles.buttonText}>More Info</Text>
+              <Text style={styles.buttonText}>{translations[17]}</Text>
             </TouchableOpacity>
           </View>
           <TouchableOpacity
             style={styles.govSchemesButton}
             onPress={() => navigation.navigate("GovSchemes")}
           >
-            <Text style={styles.buttonText}>Gov Schemes</Text>
+            <Text style={styles.buttonText}>{translations[18]}</Text>
           </TouchableOpacity>
         </View>
         <Carousel />
