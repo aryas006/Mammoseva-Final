@@ -10,16 +10,38 @@ import {
   ScrollView,
   Alert,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Logo from "../../assets/Logo.png";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { translations } from "../utils";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [translation, setTranslation] = useState({});
+  const [language, setLanguage] = useState('English'); // Added state for language
   const navigation = useNavigation();
+
+  useEffect(() => {
+    const getLanguagePreference = async () => {
+      try {
+        const savedLanguage = await AsyncStorage.getItem('selectedLanguage');
+        if (savedLanguage) {
+          setLanguage(savedLanguage);
+          setTranslation(translations.reduce((acc, item, index) => {
+            acc[index] = item[savedLanguage];
+            return acc;
+          }, {}));
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getLanguagePreference();
+  }, []);
 
   const handleLogin = () => {
     console.log("Logging in...");
@@ -55,7 +77,7 @@ const Login = () => {
     >
       <ScrollView contentContainerStyle={styles.scrollView} keyboardShouldPersistTaps="always">
         <Image source={Logo} style={styles.logo} />
-        <Text style={styles.title}>Log In</Text>
+        <Text style={styles.title}>{translation[1]}</Text>
         <Text style={styles.label}>Email</Text>
         <TextInput
           style={styles.input}

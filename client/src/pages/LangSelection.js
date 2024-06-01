@@ -7,44 +7,22 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { RadioButton } from 'react-native-paper';
 
 const LangSelection = () => {
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const navigation = useNavigation();
+  const navigation = useNavigation();
   const [checked, setChecked] = useState('English');
 
-  // const handleLogin = () => {
-  //   console.log("Logging in...");
-  //   const userData = { email, password };
-
-  //   axios.post("http://192.168.0.106:9000/login", userData)
-  //     .then(async (res) => {
-  //       console.log(res.data);
-
-  //       if (res.status === 200) {
-  //         await AsyncStorage.setItem("token", res.data.data);
-  //         await AsyncStorage.setItem("isLoggedIn", "true");
-  //         Alert.alert("Logged in Successfully", "", [
-  //           {
-  //             text: "OK", onPress: () => navigation.reset({
-  //               index: 0,
-  //               routes: [{ name: "Home" }],
-  //             })
-  //           },
-  //         ]);
-  //       } else {
-  //         Alert.alert("Login failed", res.data.message || "Unknown error");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //       Alert.alert("Login failed", "An error occurred. Please try again.");
-  //     });
-  // };
+  const saveLanguage = async (language) => {
+    try {
+      await AsyncStorage.setItem('selectedLanguage', language);
+      Alert.alert('Success', 'Language preference saved successfully');
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Error', 'Failed to save the language');
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -75,7 +53,13 @@ const LangSelection = () => {
           <Text style={styles.radioButtonLabel}>Hindi</Text>
         </View>
       </View>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={async () => {
+          await saveLanguage(checked);
+          navigation.navigate("Login");
+        }}
+      >
         <Text style={styles.buttonText}>Save</Text>
       </TouchableOpacity>
     </View>
