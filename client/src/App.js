@@ -68,6 +68,11 @@ export default function App() {
               component={ProfileEdit}
               options={{ headerShown: false }}
             />
+            <Stack.Screen
+              name="LangSelection"
+              component={LangSelection}
+              options={{ headerShown: false }}
+            />
           </>
         ) : (
           <>
