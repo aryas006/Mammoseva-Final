@@ -8,45 +8,51 @@ const DocsInfo = () => {
     {
       id: 1,
       title: "Breast Self Examination (BSE)",
-
+      link: "",
       imagePath: require("../../assets/images/logob1.png"),
       tag: "Info",
     },
     {
       id: 2,
       title: "What is screening",
-
+      link: "",
       imagePath: require("../../assets/images/logob1.png"),
       tag: "Info",
     },
   ];
 
+  const handleLinkPress = (url) => {
+    Linking.openURL(url);
+  }
+
   return (
     <>
       <ScrollView contentContainerStyle={styles.scrollView}>
-        <Text style={styles.title}>Docs</Text>
+        <Text style={styles.title}>Blogs</Text>
         {blogs.map((blog) => (
-          <View style={styles.blogItem} key={blog.id}>
-            <View style={styles.imageContainer}>
-              <Image source={blog.imagePath} style={styles.image} />
+          <TouchableOpacity key={blog.id} onPress={() => handleLinkPress(blog.link)}>
+            <View style={styles.blogItem}>
+              <View style={styles.imageContainer}>
+                <Image source={blog.imagePath} style={styles.image} />
+              </View>
+              <View style={styles.textContainer}>
+                <Text style={styles.blogTitle}>{blog.title}</Text>
+                <Text style={styles.blogSubtitle}>{blog.subtitle}</Text>
+              </View>
+              <View
+                style={{
+                  borderRadius: 1000,
+                  marginLeft: 10,
+                  paddingHorizontal: 10,
+                  paddingVertical: 5,
+                  backgroundColor: "white",
+                  borderRadius: 100,
+                }}
+              >
+                <Text style={styles.blogTag}>{blog.tag}</Text>
+              </View>
             </View>
-            <View style={styles.textContainer}>
-              <Text style={styles.blogTitle}>{blog.title}</Text>
-              <Text style={styles.blogSubtitle}>{blog.subtitle}</Text>
-            </View>
-            <View
-              style={{
-                borderRadius: 1000,
-                marginLeft: 10,
-                paddingHorizontal: 10,
-                paddingVertical: 5,
-                backgroundColor: "white",
-                borderRadius: 100,
-              }}
-            >
-              <Text style={styles.blogTag}>{blog.tag}</Text>
-            </View>
-          </View>
+          </TouchableOpacity>
         ))}
       </ScrollView>
       <Nav />
