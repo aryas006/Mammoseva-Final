@@ -1,8 +1,30 @@
 import React from "react";
 import { StyleSheet, Text, View, Image, Button, Linking } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { translations } from "../utils";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function App() {
+
+  useEffect(() => {
+    const getLanguagePreference = async () => {
+      try {
+        const savedLanguage = await AsyncStorage.getItem('selectedLanguage');
+        if (savedLanguage) {
+          setLanguage(savedLanguage);
+          setTranslation(translations.reduce((acc, item, index) => {
+            acc[index] = item[savedLanguage];
+            return acc;
+          }, {}));
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getLanguagePreference();
+  }, []);
+
   const handlePress = () => {
     const url = "https://swastavacancercare.org/donate-confidence/";
     Linking.openURL(url).catch((err) =>
@@ -22,11 +44,7 @@ export default function App() {
           style={styles.image}
         />
         <Text style={styles.description}>
-          Swastava Cancer Care is a non-profit organisation working towards the
-          cause of defeating cancer in India. Registered as a society in 2017,
-          Swastava's mission is to create awareness among people in general and
-          youth in particular about various types of cancers and their causes
-          along with a way to prevent them.
+          {translations[46]}
         </Text>
         <Button title="Visit" onPress={handlePress} style={styles.button} />
       </View>
