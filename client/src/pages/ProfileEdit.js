@@ -15,7 +15,21 @@ const ProfileEdit = () => {
   const [userData, setUserData] = useState({});
   const [username, setUsername] = useState("");
   const [dayOfCycle, setDayOfCycle] = useState("");
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [password, setPassword] = useState("");
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date) => {
+    setPeriodDate(date);
+    hideDatePicker();
+  };
 
   useEffect(() => {
     const getData = async () => {
@@ -97,13 +111,17 @@ const ProfileEdit = () => {
           autoCapitalize="none"
         />
 
-        <TextInput
-          style={styles.input}
-          placeholder="Period Date"
-          value={userData.periodDate}
-          onChangeText={setDayOfCycle}
-          keyboardType="numeric"
+        <TouchableOpacity style={styles.dateInput} onPress={showDatePicker}>
+          <Text>{userData.periodDate}</Text>
+        </TouchableOpacity>
+        <DateTimePickerModal
+          isVisible={isDatePickerVisible}
+          mode="date"
+          onConfirm={handleConfirm}
+          onCancel={hideDatePicker}
         />
+
+
 
         <TextInput
           style={styles.input}

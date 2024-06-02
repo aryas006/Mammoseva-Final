@@ -60,6 +60,15 @@ const Dashboard = () => {
             { token }
           );
           setUserData(response.data.data);
+
+          const periodDate = new Date(userData.periodDate);
+          const targetDate = new Date(periodDate);
+          targetDate.setDate(periodDate.getDate() - 5);
+          const currentDate = new Date();
+          const timeDifference = targetDate - currentDate;
+          const dayDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+          setNum(dayDifference);
+
           console.log(response.data.data);
         }
       } catch (error) {

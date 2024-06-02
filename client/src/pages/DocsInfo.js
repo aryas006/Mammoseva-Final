@@ -14,7 +14,7 @@ const DocsInfo = () => {
     },
     {
       id: 2,
-      title: "What is screening",
+      title: "What is screening?",
       link: "",
       imagePath: require("../../assets/images/logob1.png"),
       tag: "Info",
