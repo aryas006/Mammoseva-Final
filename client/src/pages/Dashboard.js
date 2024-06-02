@@ -70,6 +70,7 @@ const Dashboard = () => {
   )
 
   useEffect(() => {
+
     const getData = async () => {
       try {
         const token = await AsyncStorage.getItem("token");
@@ -135,6 +136,38 @@ const Dashboard = () => {
 
   }, [language]);
 
+  const handleBreastCheck = () => {
+    Alert.alert(
+      "Breast Self-Checking",
+      "Have you performed Breast Self-Checking?",
+      [
+        {
+          text: "No",
+          onPress: () =>
+            Alert.alert(
+              "Please check, as early as possible",
+              "",
+              [
+                { text: "OK" }
+              ]
+            ),
+          style: "cancel"
+        },
+        {
+          text: "Yes",
+          onPress: () =>
+            Alert.alert(
+              "Congrats! You are on your way to have a healthy breast health!",
+              "",
+              [
+                { text: "OK" }
+              ]
+            )
+        }
+      ]
+    );
+  };
+
   
   return (
     <LinearGradient
@@ -147,10 +180,12 @@ const Dashboard = () => {
             {translation[10]} {userData.name ? userData.name : "User"}, {greeting}
           </Text>
           <Calendar />
-          <View style={styles.countdownContainer}>
-            <Text style={styles.countdownText}>{num} {translation[14]}</Text>
-            <Text style={styles.countdownSubText}>{translation[15]}</Text>
-          </View>
+          <TouchableOpacity onPress={handleBreastCheck}>
+            <View style={styles.countdownContainer}>
+              <Text style={styles.countdownText}>{num} {translation[14]}</Text>
+              <Text style={styles.countdownSubText}>{translation[15]}</Text>
+            </View>
+          </TouchableOpacity>
         </View>
         <View style={{ width: "100%", padding: 10 }}>
           <View style={styles.buttonContainer}>
