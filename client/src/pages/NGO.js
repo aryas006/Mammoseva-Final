@@ -1,21 +1,25 @@
-import React from "react";
-import { StyleSheet, Text, View, Image, Button, Linking } from "react-native";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View, Image, Linking, TouchableOpacity} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { translations } from "../utils";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function App() {
+  const [language, setLanguage] = useState("English");
+  const [translation, setTranslation] = useState({});
 
   useEffect(() => {
     const getLanguagePreference = async () => {
       try {
-        const savedLanguage = await AsyncStorage.getItem('selectedLanguage');
+        const savedLanguage = await AsyncStorage.getItem("selectedLanguage");
         if (savedLanguage) {
           setLanguage(savedLanguage);
-          setTranslation(translations.reduce((acc, item, index) => {
-            acc[index] = item[savedLanguage];
-            return acc;
-          }, {}));
+          setTranslation(
+            translations.reduce((acc, item, index) => {
+              acc[index] = item[savedLanguage];
+              return acc;
+            }, {})
+          );
         }
       } catch (error) {
         console.error(error);
@@ -43,11 +47,16 @@ export default function App() {
           source={require("../../assets/images/svastava.jpg")}
           style={styles.image}
         />
-        <Text style={styles.description}>
-          {translations[46]}
-        </Text>
-        <Button title="Visit" onPress={handlePress} style={styles.button} />
+        <Text style={styles.description}>{translation[46]}</Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handlePress}
+        >
+          <Text style={styles.buttonText} onPress={handlePress}>Visit</Text>
+        </TouchableOpacity>
       </View>
+
+
     </LinearGradient>
   );
 }
@@ -58,9 +67,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingTop: 50,
+    width:'100%'
   },
   header: {
-    fontSize: 30, // Increased font size
+    fontSize: 30,
     fontWeight: "bold",
     marginBottom: 20,
   },
@@ -71,12 +81,24 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   description: {
-    fontSize: 18, // Increased font size
+    fontSize: 18,
     textAlign: "center",
     paddingHorizontal: 20,
-    marginBottom: 20, // Added margin bottom
+    marginBottom: 20,
   },
   button: {
-    fontSize: 20, // Increased font size
+    width: "100%",
+    backgroundColor: "#CE196A",
+    paddingVertical: 20,
+    marginTop: 10,
+    borderRadius: 5,
+    display: "flex",
+    alignItems: "center",
+    width: '50%'
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });

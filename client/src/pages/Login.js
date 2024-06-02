@@ -47,7 +47,7 @@ const Login = () => {
     console.log("Logging in...");
     const userData = { email, password };
 
-    axios.post("http://192.168.0.106:9000/login", userData)
+    axios.post("http://192.168.0.107:9000/login", userData)
       .then(async (res) => {
         console.log(res.data);
 
@@ -55,11 +55,11 @@ const Login = () => {
           await AsyncStorage.setItem("token", res.data.data);
           await AsyncStorage.setItem("isLoggedIn", "true");
           Alert.alert("Logged in Successfully", "", [
-            { text: "OK", onPress: () => navigation.reset({
-              index: 0,
-              routes: [{ name: "Home" }],
-            }) },
-          ]);
+            {
+              text: "OK",
+              onPress: () => navigation.navigate("Home"),
+            },
+          ])
         } else {
           Alert.alert("Login failed", res.data.message || "Unknown error");
         }

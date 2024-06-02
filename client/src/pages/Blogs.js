@@ -10,15 +10,15 @@ const Blogs = () => {
       title: "Meet Rina: A Stage 2 Breast Cancer Survivor from India",
       subtitle: "Rina: Stage 2",
       imagePath: require("../../assets/images/logob1.png"),
-      tag: "Podcast",
+      tag: "Blogs",
       link: "https://learnlooklocate.com/rina-stage-2-breast-cancer-survivor-india/"
     },
     {
       id: 2,
-      title: "Breast cancer: 'I am a stronger person today'",
+      title: "Simran Sethi - Breast Cancer Experience",
       subtitle: "Simran: HER2-Positive",
       imagePath: require("../../assets/images/logob1.png"),
-      tag: "Link",
+      tag: "Blogs",
       link: "https://www.siemens-healthineers.com/perspectives/breastcancer-patientstory-India"
     },
     {
@@ -27,15 +27,15 @@ const Blogs = () => {
         "Breast cancer survivor finds new calling as a well-being coach in India",
       subtitle: "Shreshta: Stage 3",
       imagePath: require("../../assets/images/logob3.png"),
-      tag: "Podcast",
-      link: "https://www.siemens-healthineers.com/perspectives/breastcancer-patientstory-India"
+      tag: "Blogs",
+      link: "https://www.scmp.com/lifestyle/health-wellness/article/3152967/breast-cancer-survivor-finds-new-calling-well-being-coach"
     },
     {
       id: 4,
       title: "3 Breast Cancer Survivors Share Their Stories",
       subtitle: "Mayo Clinic",
       imagePath: require("../../assets/images/survivor1.jpg"),
-      tag: "Link",
+      tag: "Youtube",
       link: "https://youtu.be/q8j_vZRZKx0?si=Qp2_hRuuRTQrjQ0S"
     },
     {
@@ -43,7 +43,7 @@ const Blogs = () => {
       title: "Mrs. Jumana shares her survival story",
       subtitle: "Manipal Hospitals",
       imagePath: require("../../assets/images/survivor2.jpg"),
-      tag: "Podcast",
+      tag: "Youtube",
       link: "https://youtu.be/Pc1vPFhQGPE?feature=shared"
     },
     {
@@ -51,9 +51,33 @@ const Blogs = () => {
       title: "2 time Breast Cancer Survivor, Ms. Arti shares her story",
       subtitle: "Sahyadri Hospitals",
       imagePath: require("../../assets/images/survivor3.jpg"),
-      tag: "Link",
+      tag: "Youtube",
       link: "https://youtu.be/DxNFq3JngPY?si=ztg0LP2xNniEv5y6"
     },
+    {
+      id: 7,
+      title: "The Breast Cancer Podcast",
+      subtitle: "Dr. Deepa Halaharvi",
+      imagePath: require("../../assets/images/survivor3.jpg"),
+      tag: "Podcast",
+      link: "https://open.spotify.com/show/09Sp2oiAsmsSeyeXEKRYIa?si=zkkA7mvCTq6CJ88GhPEuhg"
+    },
+    {
+      id: 8,
+      title: "The Breast Cancer Recovery Coach",
+      subtitle: "Laura Lummer",
+      imagePath: require("../../assets/images/survivor2.jpg"),
+      tag: "Podcast",
+      link: "https://open.spotify.com/show/6O1n0AC2tuK5SaFFHCK13j?si=yx0gkOWISLyAoc_nVuxaKw&nd=1&dlsi=91968565a51b4b7f"
+    },
+    {
+      id: 9,
+      title: "Dancing through the pain of a Breast Cancer Diagnosis",
+      subtitle: "All Talk Oncology Cancer Podcast",
+      imagePath: require("../../assets/images/survivor1.jpg"),
+      tag: "Podcast",
+      link: "https://open.spotify.com/episode/6vB5FlSK1rhBVPNAaAgOLj?si=FlhFQhFYRzSRvL3btXe-hg&nd=1&dlsi=7783c191e11843f4"
+    }
   ];
 
   const handleLinkPress = (url) => {

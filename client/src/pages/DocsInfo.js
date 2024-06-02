@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, ScrollView, Image } from "react-native";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Linking } from "react-native";
 import Nav from "../components/Nav";
 
 const DocsInfo = () => {
@@ -8,14 +8,21 @@ const DocsInfo = () => {
     {
       id: 1,
       title: "Breast Self Examination (BSE)",
-      link: "",
+      link: "https://docs.google.com/document/d/15AXuRnwLgaDJzvuIensK-jVa6RD47sbx/edit?usp=sharing&ouid=102320164963819950398&rtpof=true&sd=true",
       imagePath: require("../../assets/images/logob1.png"),
       tag: "Info",
     },
     {
       id: 2,
       title: "What is screening?",
-      link: "",
+      link: "https://docs.google.com/document/d/1b9dFPFoPvW3ks5m5JgPwBVTegIuBSzrD/edit?usp=sharing&ouid=102320164963819950398&rtpof=true&sd=true",
+      imagePath: require("../../assets/images/logob1.png"),
+      tag: "Info",
+    },
+    {
+      id: 3,
+      title: "Signs And Symptoms",
+      link: "https://drive.google.com/file/d/1FZeK2uGCie-hFo7EoH6FYBBaI5bHR2S2/view?usp=sharing",
       imagePath: require("../../assets/images/logob1.png"),
       tag: "Info",
     },

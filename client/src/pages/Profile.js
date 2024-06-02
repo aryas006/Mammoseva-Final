@@ -1,8 +1,9 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 
 const Profile = () => {
   const navigation = useNavigation();
@@ -18,7 +19,7 @@ const Profile = () => {
         const token = await AsyncStorage.getItem("token");
         if (token) {
           const response = await axios.post(
-            "http://192.168.0.106:9000/userdata",
+            "http://192.168.0.107:9000/userdata",
             { token }
           );
           setUserData(response.data.data);

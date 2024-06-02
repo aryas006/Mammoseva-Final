@@ -18,11 +18,31 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { translations } from "../utils";
 import { useFocusEffect } from "@react-navigation/native";
 
+const greetingTranslations = [
+  {
+    English: "Good Morning",
+    Hindi: "सुप्रभात",
+    Marathi: "सुप्रभात",
+  },
+  {
+    English: "Good Afternoon",
+    Hindi: "शुभ अपराह्न",
+    Marathi: "शुभ दुपार",
+  },
+  {
+    English: "Good Evening",
+    Hindi: "शुभ संध्या",
+    Marathi: "शुभ संध्याकाळ",
+  },
+];
+
 const Dashboard = () => {
   const [num, setNum] = useState(0);
   const navigation = useNavigation();
   const [userData, setUserData] = useState({});
-  const [greeting, setGreeting] = useState("Good Morning")
+  const [greeting, setGreeting] = useState("Good Morning");
+  const [language, setLanguage] = useState('English');
+  const [translation, setTranslation] = useState({});
 
   const handleBackPress = async () => {
     Alert.alert('Exit', 'Are you sure you wish to exit the app?', [
@@ -50,13 +70,12 @@ const Dashboard = () => {
   )
 
   useEffect(() => {
-
     const getData = async () => {
       try {
         const token = await AsyncStorage.getItem("token");
         if (token) {
           const response = await axios.post(
-            "http://192.168.0.106:9000/userdata",
+            "http://192.168.0.107:9000/userdata",
             { token }
           );
           setUserData(response.data.data);
@@ -80,16 +99,20 @@ const Dashboard = () => {
 
     const updateGreeting = () => {
       const currentHour = new Date().getHours();
+      let greetingIndex;
+
       if (currentHour < 12) {
-        setGreeting("Good Morning");
+        greetingIndex = 0; // Morning
       } else if (currentHour < 18) {
-        setGreeting("Good Afternoon");
+        greetingIndex = 1; // Afternoon
       } else {
-        setGreeting("Good Evening");
+        greetingIndex = 2; // Evening
       }
+
+      setGreeting(greetingTranslations[greetingIndex][language]);
     };
 
-    updateGreeting();
+
 
     const getLanguagePreference = async () => {
       try {
@@ -100,15 +123,19 @@ const Dashboard = () => {
             acc[index] = item[savedLanguage];
             return acc;
           }, {}));
+          updateGreeting();
         }
       } catch (error) {
         console.error(error);
       }
     };
 
+    getData();
     getLanguagePreference();
-  }, []);
 
+  }, [language]);
+
+  
   return (
     <LinearGradient
       colors={["#FF55AB", "#EFB4C8", "#FFFFFF"]}
@@ -117,12 +144,12 @@ const Dashboard = () => {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.mainContent}>
           <Text style={styles.greetingText}>
-            {translations[10]} {userData.name ? userData.name : "User"}, {greeting}
+            {translation[10]} {userData.name ? userData.name : "User"}, {greeting}
           </Text>
           <Calendar />
           <View style={styles.countdownContainer}>
-            <Text style={styles.countdownText}>{num} {translations[14]}</Text>
-            <Text style={styles.countdownSubText}>{translations[15]}</Text>
+            <Text style={styles.countdownText}>{num} {translation[14]}</Text>
+            <Text style={styles.countdownSubText}>{translation[15]}</Text>
           </View>
         </View>
         <View style={{ width: "100%", padding: 10 }}>
@@ -131,20 +158,20 @@ const Dashboard = () => {
               onPress={() => navigation.navigate("NGO")}
               style={styles.content}
             >
-              <Text style={styles.buttonText}>{translations[16]}</Text>
+              <Text style={styles.buttonText}>{translation[16]}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => navigation.navigate("Docs")}
               style={styles.content}
             >
-              <Text style={styles.buttonText}>{translations[17]}</Text>
+              <Text style={styles.buttonText}>{translation[17]}</Text>
             </TouchableOpacity>
           </View>
           <TouchableOpacity
             style={styles.govSchemesButton}
             onPress={() => navigation.navigate("GovSchemes")}
           >
-            <Text style={styles.buttonText}>{translations[18]}</Text>
+            <Text style={styles.buttonText}>{translation[18]}</Text>
           </TouchableOpacity>
         </View>
         <Carousel />
@@ -165,7 +192,7 @@ const styles = StyleSheet.create({
   greetingText: {
     fontSize: 20,
     color: "white",
-    fontFamily: "sans",
+    // fontFamily: "sans",
     fontWeight: "light",
   },
   countdownContainer: {
@@ -176,14 +203,14 @@ const styles = StyleSheet.create({
   countdownText: {
     fontSize: 100,
     color: "white",
-    fontFamily: "sans",
+    // fontFamily: "sans",
     fontWeight: "100",
     textAlign: "center",
   },
   countdownSubText: {
     fontSize: 20,
     color: "white",
-    fontFamily: "sans",
+    // fontFamily: "sans",
     fontWeight: "light",
     textAlign: "center",
   },
@@ -209,7 +236,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 20,
-    fontFamily: "sans",
+    // fontFamily: "sans",
     fontWeight: "light",
     color: "white",
   },
