@@ -60,4 +60,31 @@ const userdata = async (req, res) => {
     }
 }
 
-module.exports = { register, login, userdata }
+const updateData = async (req, res) => {
+    const { token, name, email, password, periodDate } = req.body
+    try {
+        if (!token || (!name && !email && !password && !periodDate)) {
+            return res.json({ message: "Please select atleast one field to update" })
+        }
+        const decoded = jwt.verify(token, process.env.JWT_SECRET)
+        const userEmail = decoded.email
+
+        const user = await  User.findOne({ email: userEmail })
+        if (!user) {
+            return res.json({ message: "User does not exist" })
+        }
+
+        if(name) user.name = name
+        if(email) user.email = email
+        if(password) user.password = await bcrypt.hash(password, 12)
+        if(periodDate) user.periodDate = periodDate
+
+        await user.save({ name, email, password, periodDate })
+
+        res.status(200).json({ message: "User data updated successfully", data: user })
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+module.exports = { register, login, userdata, updateData }

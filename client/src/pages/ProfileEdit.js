@@ -12,14 +12,64 @@ import { LinearGradient } from "expo-linear-gradient";
 const ProfileEdit = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
+  const [userData, setUserData] = useState({});
   const [username, setUsername] = useState("");
   const [dayOfCycle, setDayOfCycle] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSave = () => {
-    // Handle save logic here
-    // console.log("Profile updated:", { email, username, dayOfCycle, password });
-    navigation.navigate("Profile");
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const token = await AsyncStorage.getItem("token");
+        if (token) {
+          const response = await axios.post(
+            "http://192.168.0.106:9000/userdata",
+            { token }
+          );
+          setUserData(response.data.data);
+          console.log(response.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    getData();
+  }, []);
+
+  const handleSave = async () => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      if (token) {
+        const updatedData = {
+          token,
+          name: username,
+          email,
+          password,
+          periodDate: dayOfCycle,
+        };
+
+        const response = await axios.put(
+          "http://192.168.0.106:9000/updateData",
+          updatedData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          Alert.alert("Success", "Profile updated successfully");
+          navigation.navigate("Profile");
+        } else {
+          Alert.alert("Error", response.data.message || "An error occurred while updating the profile");
+        }
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      Alert.alert("Error", "An error occurred while updating the profile");
+    }
   };
 
   return (
@@ -33,7 +83,7 @@ const ProfileEdit = () => {
         <TextInput
           style={styles.input}
           placeholder="Email"
-          value={email}
+          value={userData.email}
           onChangeText={setEmail}
           keyboardType="email-address"
           autoCapitalize="none"
@@ -41,16 +91,16 @@ const ProfileEdit = () => {
 
         <TextInput
           style={styles.input}
-          placeholder="Username"
-          value={username}
+          placeholder="Name"
+          value={userData.name}
           onChangeText={setUsername}
           autoCapitalize="none"
         />
 
         <TextInput
           style={styles.input}
-          placeholder="Day of Cycle"
-          value={dayOfCycle}
+          placeholder="Period Date"
+          value={userData.periodDate}
           onChangeText={setDayOfCycle}
           keyboardType="numeric"
         />
@@ -58,7 +108,7 @@ const ProfileEdit = () => {
         <TextInput
           style={styles.input}
           placeholder="Password"
-          value={password}
+          value={userData.password}
           onChangeText={setPassword}
           secureTextEntry
           autoCapitalize="none"
