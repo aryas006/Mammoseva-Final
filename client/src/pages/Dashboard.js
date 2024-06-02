@@ -5,6 +5,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  BackHandler,
+  Alert,
 } from "react-native";
 import Calendar from "../components/Calendar";
 import { LinearGradient } from "expo-linear-gradient";
@@ -14,6 +16,7 @@ import Carousel from "../components/Carousel";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { translations } from "../utils";
+import { useFocusEffect } from "@react-navigation/native";
 
 const Dashboard = () => {
   const [num, setNum] = useState(0);
@@ -21,7 +24,33 @@ const Dashboard = () => {
   const [userData, setUserData] = useState({});
   const [greeting, setGreeting] = useState("Good Morning")
 
+  const handleBackPress = async () => {
+    Alert.alert('Exit', 'Are you sure you wish to exit the app?', [
+      {
+        text: 'Cancel',
+        onPress: () => null,
+        style: 'cancel'
+      },
+      {
+        text: 'Exit',
+        onPress: () => BackHandler.exitApp()
+      }
+    ])
+    return true
+  }
+
+  useFocusEffect(
+    React.useCallback(() => {
+      BackHandler.addEventListener("hardwareBackPress", handleBackPress)
+
+    return () => {
+      BackHandler.removeEventListener("hardwareBackPress", handleBackPress)
+    }
+    })
+  )
+
   useEffect(() => {
+
     const getData = async () => {
       try {
         const token = await AsyncStorage.getItem("token");

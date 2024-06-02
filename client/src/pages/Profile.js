@@ -10,9 +10,31 @@ const Profile = () => {
   const [username, setUsername] = useState("username123");
   const [dayOfCycle, setDayOfCycle] = useState("5");
   const [password, setPassword] = useState("");
+  const [userData, setUserData] = useState({});
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const token = await AsyncStorage.getItem("token");
+        if (token) {
+          const response = await axios.post(
+            "http://192.168.0.106:9000/userdata",
+            { token }
+          );
+          setUserData(response.data.data);
+          console.log(response.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    getData();
+  }, []);
 
   const handleEdit = () => {
-    console.log("Profile updated:", { email, username, dayOfCycle, password });
+    // console.log("Profile updated:", { email, username, dayOfCycle, password });
+    console.log("Editing profile...")
     navigation.navigate("ProfileEdit");
   };
 
@@ -33,18 +55,19 @@ const Profile = () => {
       <View style={styles.container}>
         <Text style={styles.header}>Profile</Text>
         <View style={styles.infoContainer}>
+          <Text style={styles.label}>Name:</Text>
+          <Text style={styles.info}>{userData.name}</Text>
+        </View>
+
+        <View style={styles.infoContainer}>
           <Text style={styles.label}>Email:</Text>
-          <Text style={styles.info}>{email}</Text>
+          <Text style={styles.info}>{userData.email}</Text>
         </View>
 
-        <View style={styles.infoContainer}>
-          <Text style={styles.label}>Username:</Text>
-          <Text style={styles.info}>{username}</Text>
-        </View>
 
         <View style={styles.infoContainer}>
-          <Text style={styles.label}>Day of Cycle:</Text>
-          <Text style={styles.info}>{dayOfCycle}</Text>
+          <Text style={styles.label}>Period Date:</Text>
+          <Text style={styles.info}>{userData.periodDate}</Text>
         </View>
 
         {/* <View style={styles.infoContainer}>

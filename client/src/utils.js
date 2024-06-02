@@ -269,9 +269,16 @@ export const translations = [
         Hindi: "सह्याद्री हॉस्पिटल्स",
         Marathi: "सह्याद्री हॉस्पिटल्स",
     },
+    // 45
     {
         English: "Name",
         Hindi: "नाम",
         Marathi: "नाव",
+    },
+    // 46
+    {
+        English: "Swastava Cancer Care is a non-profit organisation working towards the cause of defeating cancer in India. Registered as a society in 2017, Swastavas mission is to create awareness among people in general and youth in particular about various types of cancers and their causes along with a way to prevent them.",
+        Hindi: "स्वस्था कैंसर केयर एक गैर-लाभकारी संगठन है जो भारत में कैंसर को हराने के लिए काम कर रहा है। 2017 में एक सोसायटी के रूप में पंजीकृत, स्वस्था का मिशन आम लोगों और विशेष रूप से युवाओं के बीच विभिन्न प्रकार के कैंसर और उनके कारणों के साथ-साथ उन्हें रोकने के तरीकों के बारे में जागरूकता पैदा करना है।",
+        Marathi: "स्वस्ताव कॅन्सर केअर ही एक ना-नफा संस्था आहे जी भारतातील कर्करोगाला पराभूत करण्याच्या उद्देशाने काम करते. 2017 मध्ये एक सोसायटी म्हणून नोंदणीकृत, स्वस्तावचे ध्येय सामान्यत: लोकांमध्ये आणि विशेषतः तरुणांमध्ये विविध प्रकारचे कर्करोग आणि त्यांची कारणे, त्यापासून बचाव करण्याच्या पद्धतींबद्दल जागरूकता निर्माण करणे हे आहे."
     }
 ];
