@@ -1,6 +1,7 @@
 const User = require('../models/user.models')
 const bcrypt = require('bcrypt')    
 const jwt = require('jsonwebtoken')
+const nodemailer = require('nodemailer')
 
 const register = async (req, res) => {
     try {
@@ -87,4 +88,75 @@ const updateData = async (req, res) => {
     }
 }
 
-module.exports = { register, login, userdata, updateData }
+const forgetPassword = async (req, res) => {
+    const { email } = req.body
+    try {
+        const userExists = await User.findOne({ email })
+        if (!userExists) {
+            return res.json({ message: "User does not exist" })
+        }
+        const { _id, name } = userExists;
+        const token = jwt.sign({ email: userExists.email, id: userExists._id }, process.env.JWT_SECRET, { expiresIn: '5m' })
+        const link = `http://192.168.0.107:9000/resetPassword/${userExists._id}/${token}`
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
+            auth: {
+             user: process.env.SENDER_EMAIL,
+             pass: process.env.APP_PASSWORD,
+            },
+           });
+          
+          var mailOptions = {
+            from: process.env.SENDER_EMAIL,
+            to: req.body.email,
+            subject: 'Password Reset Link',
+            text: `Dear ${name},
+
+            We received a request to reset the password for your Mammoseva account. If you made this request, please click the link below to reset your password:
+            
+            Reset Password: ${link}
+            
+            Please note that this link will expire in 5 minutes. If you do not reset your password within this time, you will need to request a new password reset link.
+            
+            If you did not request a password reset, please ignore this email. Your account will remain secure, and no changes will be made.
+            
+            Thank you for using Mammoseva!
+            
+            Best regards,
+            Team Mammoseva`
+          };
+          
+          transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+              console.log(error);
+            } else {
+              console.log('Email sent: ' + info.response);
+            }
+          });
+        console.log(link)
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+const resetPassword = async (req, res) => {
+    const { id, token } = req.params
+    const { password } = req.body
+    try {
+        const userExists = await User.findOne({ _id: id })
+        if (!userExists) {
+            return res.json({ message: "User does not exist" })
+        }
+        const decoded = jwt.verify(token, process.env.JWT_SECRET)
+        const hashedPassword = await bcrypt.hash(password, 12)
+        await User.updateOne({ _id: id }, {$set: { password: hashedPassword }})
+        res.json({ message: "Password reset successfully"})
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+module.exports = { register, login, userdata, updateData, forgetPassword, resetPassword }
