@@ -41,36 +41,36 @@ const Dashboard = () => {
   const navigation = useNavigation();
   const [userData, setUserData] = useState({});
   const [greeting, setGreeting] = useState("Good Morning");
-  const [language, setLanguage] = useState('English');
+  const [language, setLanguage] = useState("English");
   const [translation, setTranslation] = useState({});
+  const [periodDate, setPeriodDate] = useState(null);
 
   const handleBackPress = async () => {
-    Alert.alert('Exit', 'Are you sure you wish to exit the app?', [
+    Alert.alert("Exit", "Are you sure you wish to exit the app?", [
       {
-        text: 'Cancel',
+        text: "Cancel",
         onPress: () => null,
-        style: 'cancel'
+        style: "cancel",
       },
       {
-        text: 'Exit',
-        onPress: () => BackHandler.exitApp()
-      }
-    ])
-    return true
-  }
+        text: "Exit",
+        onPress: () => BackHandler.exitApp(),
+      },
+    ]);
+    return true;
+  };
 
   useFocusEffect(
     React.useCallback(() => {
-      BackHandler.addEventListener("hardwareBackPress", handleBackPress)
+      BackHandler.addEventListener("hardwareBackPress", handleBackPress);
 
-    return () => {
-      BackHandler.removeEventListener("hardwareBackPress", handleBackPress)
-    }
+      return () => {
+        BackHandler.removeEventListener("hardwareBackPress", handleBackPress);
+      };
     })
-  )
+  );
 
   useEffect(() => {
-
     const getData = async () => {
       try {
         const token = await AsyncStorage.getItem("token");
@@ -81,12 +81,16 @@ const Dashboard = () => {
           );
           setUserData(response.data.data);
 
-          const periodDate = new Date(userData.periodDate);
+          const periodDate = new Date(response.data.data.periodDate);
+          setPeriodDate(periodDate);
+
           const targetDate = new Date(periodDate);
           targetDate.setDate(periodDate.getDate() - 5);
           const currentDate = new Date();
           const timeDifference = targetDate - currentDate;
-          const dayDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+          const dayDifference = Math.ceil(
+            timeDifference / (1000 * 60 * 60 * 24)
+          );
           setNum(dayDifference);
 
           console.log(response.data.data);
@@ -113,17 +117,17 @@ const Dashboard = () => {
       setGreeting(greetingTranslations[greetingIndex][language]);
     };
 
-
-
     const getLanguagePreference = async () => {
       try {
-        const savedLanguage = await AsyncStorage.getItem('selectedLanguage');
+        const savedLanguage = await AsyncStorage.getItem("selectedLanguage");
         if (savedLanguage) {
           setLanguage(savedLanguage);
-          setTranslation(translations.reduce((acc, item, index) => {
-            acc[index] = item[savedLanguage];
-            return acc;
-          }, {}));
+          setTranslation(
+            translations.reduce((acc, item, index) => {
+              acc[index] = item[savedLanguage];
+              return acc;
+            }, {})
+          );
           updateGreeting();
         }
       } catch (error) {
@@ -131,9 +135,7 @@ const Dashboard = () => {
       }
     };
 
-    getData();
     getLanguagePreference();
-
   }, [language]);
 
   const handleBreastCheck = () => {
@@ -144,14 +146,10 @@ const Dashboard = () => {
         {
           text: "No",
           onPress: () =>
-            Alert.alert(
-              "Please check, as early as possible",
-              "",
-              [
-                { text: "OK" }
-              ]
-            ),
-          style: "cancel"
+            Alert.alert("Please check, as early as possible", "", [
+              { text: "OK" },
+            ]),
+          style: "cancel",
         },
         {
           text: "Yes",
@@ -159,16 +157,13 @@ const Dashboard = () => {
             Alert.alert(
               "Congrats! You are on your way to have a healthy breast health!",
               "",
-              [
-                { text: "OK" }
-              ]
-            )
-        }
+              [{ text: "OK" }]
+            ),
+        },
       ]
     );
   };
 
-  
   return (
     <LinearGradient
       colors={["#FF55AB", "#EFB4C8", "#FFFFFF"]}
@@ -177,12 +172,15 @@ const Dashboard = () => {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.mainContent}>
           <Text style={styles.greetingText}>
-            {translation[10]} {userData.name ? userData.name : "User"}, {greeting}
+            {translation[10]} {userData.name ? userData.name : "User"},{" "}
+            {greeting}
           </Text>
-          <Calendar />
+          {periodDate && <Calendar periodStartDay={periodDate.getDate()} />}
           <TouchableOpacity onPress={handleBreastCheck}>
             <View style={styles.countdownContainer}>
-              <Text style={styles.countdownText}>{num} {translation[14]}</Text>
+              <Text style={styles.countdownText}>
+                {num} {translation[14]}
+              </Text>
               <Text style={styles.countdownSubText}>{translation[15]}</Text>
             </View>
           </TouchableOpacity>

@@ -1,27 +1,50 @@
 import React from "react";
 import { View, Text, FlatList, StyleSheet } from "react-native";
 
-const Calendar = ({ currentDay, periodDate }) => {
+const cycleLength = 7;
+const bufferDays = 5;
+
+const Calendar = ({ periodStartDay }) => {
   // Function to get the number of days in a month
   const getDaysInMonth = (year, month) => {
     return new Date(year, month + 1, 0).getDate();
   };
 
   // Get the number of days in the current month
-  const daysInMonth = getDaysInMonth(new Date().getFullYear(), new Date().getMonth());
+  const daysInMonth = getDaysInMonth(
+    new Date().getFullYear(),
+    new Date().getMonth()
+  );
+
   // Generate an array of days from 1 to the number of days in the month
   const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
-  
-  // Function to check if a given day is today
-  const isToday = (day) => {
-    const today = new Date();
-    return today.getDate() === day && today.getMonth() === new Date().getMonth() && today.getFullYear() === new Date().getFullYear();
+
+  // Function to check if a given day is within the menstruation period
+  const isMenstruationDay = (day) => {
+    const adjustedStartDay = periodStartDay % daysInMonth;
+    return (
+      (day >= adjustedStartDay && day < adjustedStartDay + cycleLength) ||
+      (adjustedStartDay + cycleLength > daysInMonth &&
+        day < (adjustedStartDay + cycleLength) % daysInMonth)
+    );
   };
 
-  // Function to check if a given day is the periodDate
-  const isPeriodDate = (day) => {
-    const date = new Date(periodDate);
-    return date.getDate() === day && date.getMonth() === new Date().getMonth() && date.getFullYear() === new Date().getFullYear();
+  // Function to check if a given day is the first day of the buffer period before menstruation
+  const isBufferStartDay = (day) => {
+    const adjustedStartDay = periodStartDay % daysInMonth;
+    const firstBufferDay = adjustedStartDay - bufferDays;
+    return firstBufferDay < 1
+      ? day === daysInMonth + firstBufferDay
+      : day === firstBufferDay;
+  };
+
+  // Function to check if a given day is the last day of the buffer period after menstruation
+  const isBufferEndDay = (day) => {
+    const adjustedEndDay = (periodStartDay + cycleLength - 1) % daysInMonth;
+    const lastBufferDay = adjustedEndDay + bufferDays;
+    return lastBufferDay > daysInMonth
+      ? day === lastBufferDay - daysInMonth
+      : day === lastBufferDay;
   };
 
   return (
@@ -34,8 +57,13 @@ const Calendar = ({ currentDay, periodDate }) => {
           <View
             style={[
               styles.dayContainer,
-              isToday(item) && styles.today,
-              isPeriodDate(item) && styles.periodDate,
+              isMenstruationDay(item) && styles.menstruationDay,
+              isBufferStartDay(item) &&
+                !isMenstruationDay(item) &&
+                styles.bufferDay,
+              isBufferEndDay(item) &&
+                !isMenstruationDay(item) &&
+                styles.bufferDay,
             ]}
           >
             <Text style={styles.dayText}>{item}</Text>
@@ -65,11 +93,11 @@ const styles = StyleSheet.create({
     fontWeight: "light",
     color: "black",
   },
-  today: {
-    backgroundColor: "#FFDD94", // Color for today's date
+  menstruationDay: {
+    backgroundColor: "#FF55AB", // Color for the menstruation days
   },
-  periodDate: {
-    backgroundColor: "#FF55AB", // Color for the period date
+  bufferDay: {
+    backgroundColor: "red", // Color for the buffer days
   },
 });
 
