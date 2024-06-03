@@ -15,7 +15,7 @@ const DocsInfo = () => {
     {
       id: 2,
       title: "What is screening?",
-      link: "https://docs.google.com/document/d/1b9dFPFoPvW3ks5m5JgPwBVTegIuBSzrD/edit?usp=sharing&ouid=102320164963819950398&rtpof=true&sd=true",
+      link: "https://docs.google.com/document/d/1b9dFPFoPvW3ks5m5JgPwBVTegIuBSzrD/edit?usp=sharing&ouid=102320164963819950398&rtpof=true&sd=truew",
       imagePath: require("../../assets/images/logob1.png"),
       tag: "Info",
     },
