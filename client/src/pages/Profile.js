@@ -19,7 +19,7 @@ const Profile = () => {
         const token = await AsyncStorage.getItem("token");
         if (token) {
           const response = await axios.post(
-            "http://192.168.0.107:9000/userdata",
+            "https://deploy-mammo-back.onrender.com:9000/userdata",
             { token }
           );
           setUserData(response.data.data);

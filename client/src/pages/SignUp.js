@@ -59,7 +59,7 @@ const SignUp = () => {
       periodDate: formattedDate,
     };
     axios
-      .post("http://192.168.0.106:9000/register", userData)
+      .post("https://deploy-mammo-back.onrender.com:9000/register", userData)
       .then((res) => {
         console.log(res.data);
         if (res.status === 201) {

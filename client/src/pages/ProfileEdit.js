@@ -37,7 +37,7 @@ const ProfileEdit = () => {
         const token = await AsyncStorage.getItem("token");
         if (token) {
           const response = await axios.post(
-            "http://192.168.0.106:9000/userdata",
+            "https://deploy-mammo-back.onrender.com:9000/userdata",
             { token }
           );
           setUserData(response.data.data);
@@ -64,7 +64,7 @@ const ProfileEdit = () => {
         };
 
         const response = await axios.put(
-          "http://192.168.0.106:9000/updateData",
+          "https://deploy-mammo-back.onrender.com:9000/updateData",
           updatedData,
           {
             headers: {
