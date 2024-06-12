@@ -52,4 +52,31 @@ const deleteBlog = async (req, res) => {
     }
 }
 
-module.exports = { createBlog, updateBlog, deleteBlog}
+const viewAllBlogs = async (req, res) => {
+    try {
+        const blogs = await Blogs.find().populate('createdBy', 'name email'); // Populate createdBy with user details
+        res.status(200).json(blogs);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server error. Please try again later." });
+    }
+};
+
+const viewUserBlogs = async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        const userExists = await User.findById(userId);
+        if (!userExists) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const blogs = await Blogs.find({ createdBy: userId }).populate('createdBy', 'name email');
+        res.status(200).json(blogs);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server error. Please try again later." });
+    }
+};
+
+module.exports = { createBlog, updateBlog, deleteBlog, viewAllBlogs, viewUserBlogs }
