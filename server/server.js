@@ -1,7 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
-const router = require('./routes/auth.routes');
+const authRouter = require('./routes/auth.routes');
+const blogRouter = require('./routes/blog.routes');
 const bodyParser = require('body-parser');
 
 const app = express();
@@ -16,4 +17,5 @@ app.use(cors());
 
 app.listen(PORT, () => console.log(`Server running at ${PORT}`))
 
-app.use('/', router)
+app.use('/', authRouter)
+app.use('/blog', blogRouter)
