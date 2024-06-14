@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Intro from "./pages/Intro";
-import Login from "./pages/Login";
-import SignUp from "./pages/SignUp";
-import Dashboard from "./pages/Dashboard";
-import Blogs from "./pages/Blogs";
-import DocsInfo from "./pages/DocsInfo";
-import GovSchemes from "./pages/GovSchemes";
-import NGO from "./pages/NGO";
+import Intro from "./src/pages/Intro";
+import Login from "./src/pages/Login";
+import SignUp from "./src/pages/SignUp";
+import Dashboard from "./src/pages/Dashboard";
+import Blogs from "./src/pages/Blogs";
+import DocsInfo from "./src/pages/DocsInfo";
+import GovSchemes from "./src/pages/GovSchemes";
+import NGO from "./src/pages/NGO";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Profile from "./pages/Profile";
-import ProfileEdit from "./pages/ProfileEdit";
-import LangSelection from './pages/LangSelection'
+import Profile from "./src/pages/Profile";
+import ProfileEdit from "./src/pages/ProfileEdit";
+import LangSelection from './src/pages/LangSelection'
 
 const Stack = createNativeStackNavigator();
 

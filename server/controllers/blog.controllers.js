@@ -12,7 +12,7 @@ const createBlog = async (req, res) => {
             return res.json({ message: "User does not exist" })
         }
         const newBlog = await Blogs.create({ title, content, createdBy })
-        rers.status(201).json({ message: "New blog created" })
+        res.status(201).json({ message: "New blog created" })
     } catch (error) {
         console.log(error)
     }
@@ -40,14 +40,14 @@ const updateBlog = async (req, res) => {
 
 const deleteBlog = async (req, res) => {
     try {
-        const { id } = request.params
+        const { id } = req.params
         const blog = await Blogs.findById(id)
         if (!blog) {
             return res.json({ message: "Blog does not exist" })
         }
         await blog.remove()
         return res.json({ message: "Blog deleted" })
-    } catch {
+    } catch (error) {
         console.log(error)
     }
 }

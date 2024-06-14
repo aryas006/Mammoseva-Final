@@ -6,6 +6,6 @@ blogRouter.post('/createBlog', blogControllers.createBlog)
 blogRouter.put('/updateBlog/:id', blogControllers.updateBlog)
 blogRouter.delete('/deleteBlog/:id', blogControllers.deleteBlog)
 blogRouter.get('/viewAllBlogs', blogControllers.viewAllBlogs)
-blogRouter.get('/viewBlog/:id', blogControllers.viewBlog)
+blogRouter.get('/viewUserBlogs/:id', blogControllers.viewUserBlogs)
 
 module.exports = blogRouter;

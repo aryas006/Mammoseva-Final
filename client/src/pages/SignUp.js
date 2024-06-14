@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -16,6 +16,7 @@ import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { translations } from "../utils";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -23,18 +24,15 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [periodDate, setPeriodDate] = useState(new Date());
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState("English");
   const navigation = useNavigation();
 
   useEffect(() => {
     const getLanguagePreference = async () => {
       try {
-        const savedLanguage = await AsyncStorage.getItem('selectedLanguage');
+        const savedLanguage = await AsyncStorage.getItem("selectedLanguage");
         if (savedLanguage) {
-          setLanguage(savedLanguage);
-          setTranslation(translations.reduce((acc, item, index) => {
-            acc[index] = item[savedLanguage];
-            return acc;
-          }, {}));
+          setSelectedLanguage(savedLanguage);
         }
       } catch (error) {
         console.error(error);
@@ -47,7 +45,7 @@ const SignUp = () => {
   const handleSignUp = () => {
     const validationError = validateFields(name, email, password, periodDate);
     if (validationError) {
-      alert(validationError);
+      Alert.alert(validationError);
       return;
     }
     const formattedDate = periodDate.toISOString().split("T")[0];
@@ -63,21 +61,24 @@ const SignUp = () => {
       .then((res) => {
         console.log(res.data);
         if (res.status === 201) {
-            Alert.alert("Registered successfully", "", [
-                { text: "OK", onPress: () => navigation.navigate("Login") },
-            ]);
+          Alert.alert("Registered successfully", "", [
+            { text: "OK", onPress: () => navigation.navigate("Login") },
+          ]);
         } else {
-            Alert.alert("Registration failed", res.data.message || "Unknown error");
+          Alert.alert(
+            "Registration failed",
+            res.data.message || "Unknown error"
+          );
         }
-    })
+      })
       .catch((err) => console.error(err));
   };
 
   const validateFields = (name, email, password, periodDate) => {
-    if (!name) return "Name is required";
-    if (!email) return "Email is required";
-    if (!password) return "Password is required";
-    if (!periodDate) return "Period date is required";
+    if (!name) return translations[45][selectedLanguage]; // "Name is required"
+    if (!email) return translations[2][selectedLanguage]; // "Email is required"
+    if (!password) return translations[3][selectedLanguage]; // "Password is required"
+    if (!periodDate) return translations[7][selectedLanguage]; // "Period date is required"
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) return "Invalid email format";
@@ -100,6 +101,8 @@ const SignUp = () => {
     hideDatePicker();
   };
 
+  const getTranslation = (index) => translations[index][selectedLanguage];
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -110,31 +113,31 @@ const SignUp = () => {
         keyboardShouldPersistTaps="always"
       >
         <Image source={Logo} style={styles.logo} />
-        <Text style={styles.title}>{translations[1]}</Text>
-        <Text style={styles.label}>{translations[45]}</Text>
+        <Text style={styles.title}>{getTranslation(1)}</Text>
+        <Text style={styles.label}>{getTranslation(45)}</Text>
         <TextInput
           style={styles.input}
-          placeholder={traslations[4]}
+          placeholder={getTranslation(4)}
           value={name}
           onChangeText={(text) => setName(text)}
         />
-        <Text style={styles.label}>{translations[2]}</Text>
+        <Text style={styles.label}>{getTranslation(2)}</Text>
         <TextInput
           style={styles.input}
-          placeholder={translations[5]}
+          placeholder={getTranslation(5)}
           value={email}
           onChangeText={(text) => setEmail(text)}
           keyboardType="email-address"
         />
-        <Text style={styles.label}>{translations[3]}</Text>
+        <Text style={styles.label}>{getTranslation(3)}</Text>
         <TextInput
           style={styles.input}
-          placeholder={translations[6]}
+          placeholder={getTranslation(6)}
           value={password}
           onChangeText={(text) => setPassword(text)}
           secureTextEntry
         />
-        <Text style={styles.label}>{translations[7]}</Text>
+        <Text style={styles.label}>{getTranslation(7)}</Text>
         <TouchableOpacity style={styles.dateInput} onPress={showDatePicker}>
           <Text>{periodDate.toISOString().split("T")[0]}</Text>
         </TouchableOpacity>
@@ -145,13 +148,13 @@ const SignUp = () => {
           onCancel={hideDatePicker}
         />
         <TouchableOpacity style={styles.button} onPress={handleSignUp}>
-          <Text style={styles.buttonText}>{translations[1]}</Text>
+          <Text style={styles.buttonText}>{getTranslation(1)}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{ marginTop: 5 }}
           onPress={() => navigation.navigate("Login")}
         >
-          <Text>{translations[8]}</Text>
+          <Text>{getTranslation(8)}</Text>
         </TouchableOpacity>
       </ScrollView>
     </KeyboardAvoidingView>
