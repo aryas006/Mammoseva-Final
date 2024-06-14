@@ -76,7 +76,7 @@ const Dashboard = () => {
         const token = await AsyncStorage.getItem("token");
         if (token) {
           const response = await axios.post(
-            "https://deploy-mammo-back.onrender.com:9000/userdata",
+            "https://deploy-mammo-back.onrender.com/userdata",
             { token }
           );
           setUserData(response.data.data);
