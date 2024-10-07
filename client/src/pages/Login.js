@@ -21,19 +21,21 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [translation, setTranslation] = useState({});
-  const [language, setLanguage] = useState('English'); // Added state for language
+  const [language, setLanguage] = useState("English"); // Added state for language
   const navigation = useNavigation();
 
   useEffect(() => {
     const getLanguagePreference = async () => {
       try {
-        const savedLanguage = await AsyncStorage.getItem('selectedLanguage');
+        const savedLanguage = await AsyncStorage.getItem("selectedLanguage");
         if (savedLanguage) {
           setLanguage(savedLanguage);
-          setTranslation(translations.reduce((acc, item, index) => {
-            acc[index] = item[savedLanguage];
-            return acc;
-          }, {}));
+          setTranslation(
+            translations.reduce((acc, item, index) => {
+              acc[index] = item[savedLanguage];
+              return acc;
+            }, {})
+          );
         }
       } catch (error) {
         console.error(error);
@@ -47,7 +49,8 @@ const Login = () => {
     console.log("Logging in...");
     const userData = { email, password };
 
-    axios.post("https://deploy-mammo-back.onrender.com/login", userData)
+    axios
+      .post("https://deploy-mammo-back.onrender.com/login", userData)
       .then(async (res) => {
         console.log(res.data);
 
@@ -57,9 +60,9 @@ const Login = () => {
           Alert.alert("Logged in Successfully", "", [
             {
               text: "OK",
-              onPress: () => navigation.navigate("Home"),
+              onPress: () => navigation.navigate("Dashboard"),
             },
-          ])
+          ]);
         } else {
           Alert.alert("Login failed", res.data.message || "Unknown error");
         }
@@ -75,7 +78,10 @@ const Login = () => {
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <ScrollView contentContainerStyle={styles.scrollView} keyboardShouldPersistTaps="always">
+      <ScrollView
+        contentContainerStyle={styles.scrollView}
+        keyboardShouldPersistTaps="always"
+      >
         <Image source={Logo} style={styles.logo} />
         <Text style={styles.title}>{translation[0]}</Text>
         <Text style={styles.label}>{translation[2]}</Text>
@@ -97,7 +103,10 @@ const Login = () => {
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>{translation[0]}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={{ marginTop: 5 }} onPress={() => navigation.navigate("SignUp")}>
+        <TouchableOpacity
+          style={{ marginTop: 5 }}
+          onPress={() => navigation.navigate("SignUp")}
+        >
           <Text>{translation[9]}</Text>
         </TouchableOpacity>
       </ScrollView>
