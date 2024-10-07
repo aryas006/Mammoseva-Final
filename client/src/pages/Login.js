@@ -43,24 +43,44 @@ const Login = () => {
     };
 
     getLanguagePreference();
+
+    // Check login status on component mount
+    const checkLoginStatus = async () => {
+      const token = await AsyncStorage.getItem("token");
+      if (token) {
+        // Navigate to Dashboard if token exists
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "Dashboard" }],
+        });
+      }
+    };
+
+    checkLoginStatus();
   }, []);
 
   const handleLogin = () => {
     console.log("Logging in...");
     const userData = { email, password };
-
+  
     axios
       .post("https://deploy-mammo-back.onrender.com/login", userData)
       .then(async (res) => {
         console.log(res.data);
-
+  
         if (res.status === 200) {
           await AsyncStorage.setItem("token", res.data.data);
           await AsyncStorage.setItem("isLoggedIn", "true");
+  
+          // Navigate to 'Home' after login, which loads the Dashboard
           Alert.alert("Logged in Successfully", "", [
             {
               text: "OK",
-              onPress: () => navigation.navigate("Dashboard"),
+              onPress: () =>
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: "Home" }],
+                }),
             },
           ]);
         } else {
@@ -72,6 +92,7 @@ const Login = () => {
         Alert.alert("Login failed", "An error occurred. Please try again.");
       });
   };
+  
 
   return (
     <KeyboardAvoidingView
