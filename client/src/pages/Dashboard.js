@@ -7,6 +7,8 @@ import {
   ScrollView,
   BackHandler,
   Alert,
+  Platform,
+  SafeAreaView,
 } from "react-native";
 import Calendar from "../components/Calendar";
 import { LinearGradient } from "expo-linear-gradient";
@@ -46,28 +48,34 @@ const Dashboard = () => {
   const [periodDate, setPeriodDate] = useState(null);
 
   const handleBackPress = async () => {
-    Alert.alert("Exit", "Are you sure you wish to exit the app?", [
-      {
-        text: "Cancel",
-        onPress: () => null,
-        style: "cancel",
-      },
-      {
-        text: "Exit",
-        onPress: () => BackHandler.exitApp(),
-      },
-    ]);
-    return true;
+    if (Platform.OS === "android") {
+      Alert.alert("Exit", "Are you sure you wish to exit the app?", [
+        {
+          text: "Cancel",
+          onPress: () => null,
+          style: "cancel",
+        },
+        {
+          text: "Exit",
+          onPress: () => BackHandler.exitApp(),
+        },
+      ]);
+      return true;
+    }
   };
 
   useFocusEffect(
     React.useCallback(() => {
-      BackHandler.addEventListener("hardwareBackPress", handleBackPress);
+      if (Platform.OS === "android") {
+        BackHandler.addEventListener("hardwareBackPress", handleBackPress);
+      }
 
       return () => {
-        BackHandler.removeEventListener("hardwareBackPress", handleBackPress);
+        if (Platform.OS === "android") {
+          BackHandler.removeEventListener("hardwareBackPress", handleBackPress);
+        }
       };
-    })
+    }, [])
   );
 
   useEffect(() => {
@@ -169,47 +177,49 @@ const Dashboard = () => {
       colors={["#FF55AB", "#EFB4C8", "#FFFFFF"]}
       style={{ flex: 1 }}
     >
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={styles.mainContent}>
-          <Text style={styles.greetingText}>
-            {translation[10]} {userData.name ? userData.name : "User"},{" "}
-            {greeting}
-          </Text>
-          {periodDate && <Calendar periodStartDay={periodDate.getDate()} />}
-          <TouchableOpacity onPress={handleBreastCheck}>
-            <View style={styles.countdownContainer}>
-              <Text style={styles.countdownText}>
-                {num} {translation[14]}
-              </Text>
-              <Text style={styles.countdownSubText}>{translation[15]}</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View style={{ width: "100%", padding: 10 }}>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("NGO")}
-              style={styles.content}
-            >
-              <Text style={styles.buttonText}>{translation[16]}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Docs")}
-              style={styles.content}
-            >
-              <Text style={styles.buttonText}>{translation[17]}</Text>
+      <SafeAreaView style={{ flex: 1 }}>
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <View style={styles.mainContent}>
+            <Text style={styles.greetingText}>
+              {translation[10]} {userData.name ? userData.name : "User"},{" "}
+              {greeting}
+            </Text>
+            {periodDate && <Calendar periodStartDay={periodDate.getDate()} />}
+            <TouchableOpacity onPress={handleBreastCheck}>
+              <View style={styles.countdownContainer}>
+                <Text style={styles.countdownText}>
+                  {num} {translation[14]}
+                </Text>
+                <Text style={styles.countdownSubText}>{translation[15]}</Text>
+              </View>
             </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            style={styles.govSchemesButton}
-            onPress={() => navigation.navigate("GovSchemes")}
-          >
-            <Text style={styles.buttonText}>{translation[18]}</Text>
-          </TouchableOpacity>
-        </View>
-        <Carousel />
-      </ScrollView>
-      <Nav />
+          <View style={styles.buttonContainer}>
+            <View style={styles.buttonsRow}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("NGO")}
+                style={styles.content}
+              >
+                <Text style={styles.buttonText}>{translation[16]}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Docs")}
+                style={styles.content}
+              >
+                <Text style={styles.buttonText}>{translation[17]}</Text>
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity
+              style={styles.govSchemesButton}
+              onPress={() => navigation.navigate("GovSchemes")}
+            >
+              <Text style={styles.buttonText}>{translation[18]}</Text>
+            </TouchableOpacity>
+          </View>
+          <Carousel />
+        </ScrollView>
+        <Nav />
+      </SafeAreaView>
     </LinearGradient>
   );
 };
@@ -217,45 +227,46 @@ const Dashboard = () => {
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
+    paddingBottom: 20, // To prevent content from getting cut off at the bottom
   },
   mainContent: {
-    paddingTop: 80,
+    paddingTop: Platform.OS === "ios" ? 60 : 80, // Adjust padding for iOS/Android
     paddingHorizontal: 10,
   },
   greetingText: {
     fontSize: 20,
     color: "white",
-    // fontFamily: "sans",
-    fontWeight: "light",
+    fontWeight: Platform.OS === "android" ? "normal" : "200", // Platform-specific font-weight
   },
   countdownContainer: {
     width: "100%",
-    alignItems: "start",
+    alignItems: "center",
     marginTop: 20,
   },
   countdownText: {
     fontSize: 100,
     color: "white",
-    // fontFamily: "sans",
-    fontWeight: "100",
+    fontWeight: Platform.OS === "android" ? "100" : "200", // Platform-specific font-weight
     textAlign: "center",
   },
   countdownSubText: {
     fontSize: 20,
     color: "white",
-    // fontFamily: "sans",
-    fontWeight: "light",
+    fontWeight: Platform.OS === "android" ? "normal" : "200", // Platform-specific font-weight
     textAlign: "center",
   },
   buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
+    marginVertical: 20,
     paddingHorizontal: 10,
-    marginTop: 20,
+  },
+  buttonsRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 10,
   },
   content: {
     backgroundColor: "#FF55AB",
-    width: "50%",
+    width: "48%", // Adjust for spacing between two buttons
     height: 100,
     justifyContent: "center",
     alignItems: "center",
@@ -265,13 +276,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.4,
     shadowRadius: 3.84,
     elevation: 5,
-    marginHorizontal: 5,
   },
   buttonText: {
     fontSize: 20,
-    // fontFamily: "sans",
-    fontWeight: "light",
+    fontWeight: Platform.OS === "android" ? "normal" : "200", // Adjust for platform consistency
     color: "white",
+    textAlign: "center",
   },
   govSchemesButton: {
     backgroundColor: "#FF55AB",
@@ -285,7 +295,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.4,
     shadowRadius: 3.84,
     elevation: 5,
-    marginTop: 10,
   },
 });
 
