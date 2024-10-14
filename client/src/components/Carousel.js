@@ -62,10 +62,51 @@ const images = [
   image29,
 ];
 
+// export default function Carousel() {
+//   return (
+//     <View style={styles.container}>
+//       <PagerView style={styles.pagerView} initialPage={0}>
+//         {images.map((image, index) => (
+//           <View style={styles.page} key={index}>
+//             <Image source={image} style={styles.image} resizeMode="cover" />
+//           </View>
+//         ))}
+//       </PagerView>
+//     </View>
+//   );
+// }
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//   },
+//   pagerView: {
+//     flex: 1,
+//     marginHorizontal: 10,
+//   },
+//   page: {
+//     justifyContent: "center",
+//     alignItems: "center",
+//     marginBottom: 80,
+//   },
+//   image: {
+//     borderRadius: 10,
+//     width: "100%",
+//     height: "90%",
+//   },
+// });
+
+const { width: SCREEN_WIDTH } = Dimensions.get("window");
+const CAROUSEL_HEIGHT = SCREEN_WIDTH * 0.6; // Adjust the multiplier as needed
+
 export default function Carousel() {
   return (
     <View style={styles.container}>
-      <PagerView style={styles.pagerView} initialPage={0}>
+      <PagerView
+        style={styles.pagerView}
+        initialPage={0}
+        // Add any additional props if needed
+      >
         {images.map((image, index) => (
           <View style={styles.page} key={index}>
             <Image source={image} style={styles.image} resizeMode="cover" />
@@ -78,20 +119,22 @@ export default function Carousel() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    height: CAROUSEL_HEIGHT, // Explicit height
+    width: "100%",
+    marginHorizontal: 10,
+    marginBottom: 20, // Adjust as needed
   },
   pagerView: {
     flex: 1,
-    marginHorizontal: 10,
   },
   page: {
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 80,
+    // Remove marginBottom to prevent extra space within PagerView
   },
   image: {
     borderRadius: 10,
     width: "100%",
-    height: "90%",
+    height: "100%", // Ensure image fills the container
   },
 });
