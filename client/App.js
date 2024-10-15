@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { View, Text } from 'react-native';
+import { View, Text } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { enableScreens } from 'react-native-screens';
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { enableScreens } from "react-native-screens";
+import { Dimensions } from 'react-native';
 
 // Enable screens before navigation container
 enableScreens();
@@ -20,7 +21,7 @@ import GovSchemes from "./src/pages/GovSchemes";
 import NGO from "./src/pages/NGO";
 import Profile from "./src/pages/Profile";
 import ProfileEdit from "./src/pages/ProfileEdit";
-import LangSelection from './src/pages/LangSelection';
+import LangSelection from "./src/pages/LangSelection";
 
 // Error Boundary Component
 class ErrorBoundary extends React.Component {
@@ -31,23 +32,31 @@ class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    console.log('Error:', error);
-    console.log('ErrorInfo:', errorInfo);
+    console.log("Error:", error);
+    console.log("ErrorInfo:", errorInfo);
     this.setState({ errorInfo });
   }
 
   render() {
     if (this.state.hasError) {
       return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
-          <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            padding: 20,
+          }}
+        >
+          <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 10 }}>
             Something went wrong!
           </Text>
           <Text style={{ marginBottom: 10 }}>
             Error: {this.state.error?.toString()}
           </Text>
-          <Text style={{ color: 'red' }}>
-            Location: {this.state.errorInfo?.componentStack?.toString().split('\n')[1]}
+          <Text style={{ color: "red" }}>
+            Location:{" "}
+            {this.state.errorInfo?.componentStack?.toString().split("\n")[1]}
           </Text>
         </View>
       );
@@ -68,7 +77,7 @@ const App = () => {
         const data = await AsyncStorage.getItem("isLoggedIn");
         setIsLoggedIn(data === "true");
       } catch (error) {
-        console.error('AsyncStorage error:', error);
+        console.error("AsyncStorage error:", error);
       } finally {
         setIsLoading(false);
       }
@@ -78,7 +87,7 @@ const App = () => {
 
   if (isLoading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Text>Loading...</Text>
       </View>
     );
@@ -87,26 +96,22 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          {isLoggedIn ? (
-            <>
-              <Stack.Screen name="Home" component={Dashboard} />
-              <Stack.Screen name="Blogs" component={Blogs} />
-              <Stack.Screen name="Docs" component={DocsInfo} />
-              <Stack.Screen name="NGO" component={NGO} />
-              <Stack.Screen name="GovSchemes" component={GovSchemes} />
-              <Stack.Screen name="Profile" component={Profile} />
-              <Stack.Screen name="ProfileEdit" component={ProfileEdit} />
-              <Stack.Screen name="LangSelection" component={LangSelection} />
-            </>
-          ) : (
-            <>
-              <Stack.Screen name="Intro" component={Intro} />
-              <Stack.Screen name="Login" component={Login} />
-              <Stack.Screen name="SignUp" component={SignUp} />
-              <Stack.Screen name="LangSelection" component={LangSelection} />
-            </>
-          )}
+        <Stack.Navigator
+          screenOptions={{ headerShown: false }}
+          initialRouteName="Intro"
+        >
+          <Stack.Screen name="Home" component={Dashboard} />
+          <Stack.Screen name="Blogs" component={Blogs} />
+          <Stack.Screen name="Docs" component={DocsInfo} />
+          <Stack.Screen name="NGO" component={NGO} />
+          <Stack.Screen name="GovSchemes" component={GovSchemes} />
+          <Stack.Screen name="Profile" component={Profile} />
+          <Stack.Screen name="ProfileEdit" component={ProfileEdit} />
+          <Stack.Screen name="LangSelection" component={LangSelection} />
+
+          <Stack.Screen name="Intro" component={Intro} />
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="SignUp" component={SignUp} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

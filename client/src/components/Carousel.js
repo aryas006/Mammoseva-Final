@@ -29,6 +29,7 @@ import image26 from "../../assets/images/c26.jpeg";
 import image27 from "../../assets/images/c27.jpeg";
 import image28 from "../../assets/images/c28.jpeg";
 import image29 from "../../assets/images/c29.jpeg";
+import { Dimensions } from 'react-native';
 
 const images = [
   image1,
